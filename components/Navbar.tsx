@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import AdresseModal from "./AdresseModal";
+import Image from "next/image";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -15,8 +16,16 @@ export default function Navbar() {
           href="/"
           className="flex items-center gap-2 font-extrabold text-2xl text-primary"
         >
-          <span className="inline-block w-8 h-8 bg-primary rounded-full mr-2"></span>
-          RoyalCargo
+          <Image
+            className="w-30 h-20 object-contain"
+            src="/logo.png"
+            objectFit="contain"
+            width={150}
+            height={200}
+            alt="log"
+          />
+          {/* <span className="inline-block w-8 h-8 bg-primary rounded-full mr-2"></span>
+          RoyalCargo */}
         </Link>
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">

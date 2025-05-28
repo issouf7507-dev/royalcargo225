@@ -75,22 +75,22 @@ export default function Hero() {
         <div className="flex flex-col items-center justify-center h-full relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             {/* Main content */}
-            <div className="flex flex-col items-center gap-8 animate-slide-up">
-              <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight">
+            <div className="flex flex-col items-center gap-8">
+              <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight animate-fade-in-up">
                 Livrer votre cargaison <br />
-                <span className="text-primary">Mondial</span>
+                <span className="text-primary animate-fade-in-up delay-200">
+                  Mondial
+                </span>
               </h1>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+              <p className="text-lg text-gray-300 max-w-2xl mx-auto animate-fade-in-up delay-300">
                 Recevez vos colis de la Chine vers la Côte d'Ivoire ou Le Mali
                 en toute sécurité et garantie. Suivi, rapidité et fiabilité pour
                 tous vos besoins logistiques.
               </p>
 
-              {/* Container image */}
-
               {/* Tracking form */}
-              <div className="w-full max-w-md mx-auto">
-                <div className="bg-gray-800 rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300 border border-gray-700">
+              <div className="w-full max-w-md mx-auto animate-fade-in-up delay-500">
+                <div className="bg-gray-800 rounded-lg shadow-lg p-6 transform hover:scale-105 transition-all duration-300 border border-gray-700 hover:border-primary">
                   <h3 className="text-xl font-semibold text-white mb-4">
                     Suivi de colis
                   </h3>
@@ -98,13 +98,13 @@ export default function Hero() {
                     className="flex flex-col gap-4"
                     onSubmit={handleRequest}
                   >
-                    <div className="relative">
+                    <div className="relative group">
                       <input
                         type="text"
                         placeholder="Numéro de suivi"
                         value={codeT}
                         onChange={(e) => setCodeT(e.target.value)}
-                        className="w-full px-5 py-3 rounded-lg border border-gray-700 bg-gray-900 text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none shadow-sm"
+                        className="w-full px-5 py-3 rounded-lg border border-gray-700 bg-gray-900 text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none shadow-sm transition-all duration-300 group-hover:border-primary"
                       />
                       <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                         <svg
@@ -124,7 +124,7 @@ export default function Hero() {
                     </div>
                     <button
                       type="submit"
-                      className="w-full px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-orange-600  shadow-md transform hover:scale-105 transition-transform"
+                      className="w-full px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-orange-600 shadow-md transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
                     >
                       Suivre mon colis
                     </button>
@@ -134,7 +134,7 @@ export default function Hero() {
 
               {/* Request address button */}
               <button
-                className="mt-6 px-8 py-3 rounded-full bg-transparent text-primary border-2 border-primary font-semibold hover:bg-primary hover:text-white transition-all duration-300 shadow-md transform hover:scale-105"
+                className="mt-6 px-8 py-3 rounded-full bg-transparent text-primary border-2 border-primary font-semibold hover:bg-primary hover:text-white transition-all duration-300 shadow-md transform hover:scale-105 hover:shadow-lg hover:shadow-primary/20 animate-fade-in-up delay-700"
                 onClick={() => setAdresseOpen(true)}
               >
                 Demande d'adresse

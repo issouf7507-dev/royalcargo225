@@ -50,7 +50,7 @@ export default function RootLayout({
     <html lang="fr" className="scroll-smooth" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-background font-sans antialiased bg-gray-900",
           inter.variable,
           poppins.variable
           // notoSansSC.variable
