@@ -66,7 +66,8 @@ export async function PATCH(
       await Promise.all(uploadPromises);
     }
 
-    // Récupérer l'adresse mise à jour avec les images
+    // Récupérer l'adresse mise à jour avec les 
+    // ssimages
     const finalAdresse = await prisma.adresse.findUnique({
       where: { id: params.id },
       include: { images: true },
