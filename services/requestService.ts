@@ -64,12 +64,12 @@ export class RequestService {
           description: "",
           etat: adresse.etat,
           codeTracking,
-          images: {
-            create: {
-              url: "",
-              description: "",
-            },
-          },
+          // images: {
+          //   create: {
+          //     url: "",
+          //     description: "",
+          //   },
+          // },
           createdAt: new Date(),
           updatedAt: new Date(),
         },
