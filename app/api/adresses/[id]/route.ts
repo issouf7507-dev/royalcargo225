@@ -4,6 +4,7 @@ import { verifyToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { writeFile } from "fs/promises";
 import { join } from "path";
+import { existsSync, mkdirSync } from "fs";
 
 export async function PATCH(
   request: Request,
@@ -42,6 +43,14 @@ export async function PATCH(
 
     // Traitement des images
     if (images.length > 0) {
+      const uploadDir = join(process.cwd(), "public", "uploads");
+      
+      // Vérifier si le dossier existe, sinon le créer
+      if (!existsSync(uploadDir)) {
+        console.log("Création du dossier uploads:", uploadDir);
+        mkdirSync(uploadDir, { recursive: true });
+      }
+
       const uploadPromises = images.map(async (image) => {
         const bytes = await image.arrayBuffer();
         const buffer = Buffer.from(bytes);
@@ -49,25 +58,32 @@ export async function PATCH(
         // Générer un nom de fichier unique
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
         const filename = `${uniqueSuffix}-${image.name}`;
-        const path = join(process.cwd(), "public", "uploads", filename);
+        const path = join(uploadDir, filename);
 
-        // Sauvegarder le fichier
-        await writeFile(path, buffer);
+        console.log("Tentative d'écriture du fichier:", path);
+        
+        try {
+          // Sauvegarder le fichier
+          await writeFile(path, buffer);
+          console.log("Fichier écrit avec succès:", path);
 
-        // Créer l'entrée dans la base de données
-        return prisma.image.create({
-          data: {
-            url: `/uploads/${filename}`,
-            adresseId: params.id,
-          },
-        });
+          // Créer l'entrée dans la base de données
+          return prisma.image.create({
+            data: {
+              url: `/uploads/${filename}`,
+              adresseId: params.id,
+            },
+          });
+        } catch (error) {
+          console.error("Erreur lors de l'écriture du fichier:", error);
+          throw error;
+        }
       });
 
       await Promise.all(uploadPromises);
     }
 
-    // Récupérer l'adresse mise à jour avec les 
-    // ssimages
+    // Récupérer l'adresse mise à jour avec les images
     const finalAdresse = await prisma.adresse.findUnique({
       where: { id: params.id },
       include: { images: true },
