@@ -19,9 +19,13 @@ export async function GET(request: Request) {
     }
 
     const adresses = await prisma.adresse.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         images: true,
       },
+
     });
 
     return NextResponse.json(adresses);
