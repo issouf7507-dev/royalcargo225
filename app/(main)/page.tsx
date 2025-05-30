@@ -58,7 +58,7 @@ const serviceMali = [
     icons: <Plane className="w-6 h-6 text-primary" />,
     title: "Envoie Normal",
     desc: "Profitez de tarifs avantageux pour vos envois de 2 semaines.",
-    price: "9 000 FR/KG",
+    price: "9 500 FR/KG",
   },
 ];
 
@@ -101,14 +101,24 @@ export default function Home() {
           pays: data.request.pays,
           service: data.request.service,
           status: data.request.status,
-          codeTracking: data.request.codeTracking, // doit être retourné par l'API
+          codeTracking: data.request.codeTracking,
           date: data.request.date,
+          images: data.request.images,
+          error: null,
         });
 
         setCodeT("");
       }
+      else{
+        setSuccessData({
+          error: "Code de tracking introuvable",
+        });
+      }
     } catch (error) {
       console.log(error);
+      setSuccessData({
+        error: "Code de tracking introuvable",
+      });
     }
   };
   return (
@@ -232,6 +242,7 @@ export default function Home() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
         className="w-full bg-gray-900 py-16 px-10 lg:px-0"
+        id="services"
       >
         <div className="max-w-6xl mx-auto text-center">
           <motion.h2
@@ -319,6 +330,7 @@ export default function Home() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
         className="w-full bg-gray-900 py-16 px-10 lg:px-0"
+        id="suivi"
       >
         <div className="max-w-4xl mx-auto text-center">
           <motion.h2

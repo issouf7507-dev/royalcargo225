@@ -96,7 +96,7 @@ export default function EditAdresseModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Prix (€)</label>
+            <label className="block text-sm font-medium mb-1">Prix (XOF)</label>
             <input
               type="number"
               step="0.01"

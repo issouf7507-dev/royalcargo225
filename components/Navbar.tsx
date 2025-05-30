@@ -53,6 +53,12 @@ export default function Navbar() {
           >
             Contact
           </Link>
+          <Link
+            href="/terms"
+            className="text-gray-400 font-medium hover:text-primary transition-colors"
+          >
+            Conditions d'utilisation
+          </Link>
           <button
             className="ml-4 px-5 py-2 rounded-full bg-primary text-white font-semibold shadow hover:bg-orange-600 transition-colors"
             onClick={() => setAdresseOpen(true)}
@@ -96,6 +102,13 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
             >
               Contact
+            </Link>
+            <Link
+              href="/terms"
+              className="text-gray-400 font-medium hover:text-primary transition-colors"
+              onClick={() => setOpen(false)}
+            >
+              Conditions d'utilisation
             </Link>
             <button
               className="mt-2 px-5 py-2 rounded-full bg-primary text-white font-semibold shadow hover:bg-orange-600 transition-colors w-full"

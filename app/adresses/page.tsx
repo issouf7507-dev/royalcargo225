@@ -19,6 +19,7 @@ interface Adresse {
   poids: number | null;
   prix: number | null;
   images: { id: string; url: string }[];
+  codeTracking: string;
 }
 
 export default function AdressesPage() {
@@ -172,9 +173,9 @@ export default function AdressesPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Liste des Adresses</h1>
+    <div className="max-w-full mx-auto px-4 py-8 mt-16">
+      <div className="w-full flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-white">Liste des Adresses</h1>
         <button
           onClick={handleLogout}
           className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
@@ -197,130 +198,142 @@ export default function AdressesPage() {
             placeholder="Rechercher par nom, téléphone, pays, type ou service..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 bg-gray-900 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
         </div>
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-4 py-2 border rounded-lg bg-gray-900 text-white border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Tous les statuts</option>
-          <option value="En attente de réception">
-            En attente de réception
-          </option>
+          <option value="En attente de réception">En attente de réception</option>
           <option value="Colis reçu">Colis reçu</option>
           <option value="Colis envoye">Colis envoyé</option>
           <option value="Arrive à Abidjan">Arrivé à Abidjan</option>
         </select>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border rounded-lg">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nom
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Téléphone
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Pays
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Type
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Service
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Statut
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Poids
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Prix
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Images
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {filteredAdresses.map((adresse) => (
-              <tr key={adresse.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{adresse.nom}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{adresse.tel}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{adresse.pays}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{adresse.type}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {adresse.service}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                    ${
-                      adresse.status === "En attente de réception"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : adresse.status === "Colis reçu"
-                        ? "bg-blue-100 text-blue-800"
-                        : adresse.status === "Colis envoye"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-purple-100 text-purple-800"
-                    }`}
-                  >
-                    {adresse.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {adresse.poids ? `${adresse.poids} kg` : "-"}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {adresse.prix ? `${adresse.prix} €` : "-"}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex -space-x-2">
-                    {adresse.images?.slice(0, 3).map((image) => (
-                      <img
-                        key={image.id}
-                        src={image.url}
-                        alt=""
-                        className="w-8 h-8 rounded-full border-2 border-white object-cover"
-                      />
-                    ))}
-                    {adresse.images?.length > 3 && (
-                      <div className="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs">
-                        +{adresse.images.length - 3}
-                      </div>
+      <div className="w-full overflow-x-auto rounded-lg shadow">
+        <div className="min-w-full inline-block align-middle">
+          <div className="overflow-hidden">
+            <table className="min-w-full bg-gray-900 border rounded-lg text-white">
+              <thead className="bg-gray-900 text-white">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Nom
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Téléphone
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Pays
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Type
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Service
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Statut
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Poids
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Prix
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Code
+                  </th>
+                  {filteredAdresses.some(adresse => adresse.images && adresse.images.length > 0) && (
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                      Images
+                    </th>
+                  )}
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-700">
+                {filteredAdresses.map((adresse) => (
+                  <tr key={adresse.id} className="hover:bg-gray-800">
+                    <td className="px-6 py-4 whitespace-nowrap">{adresse.nom}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{adresse.tel}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{adresse.pays}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{adresse.type}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{adresse.service}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        ${
+                          adresse.status === "En attente de réception"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : adresse.status === "Colis reçu"
+                            ? "bg-blue-100 text-blue-800"
+                            : adresse.status === "Colis envoye"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-purple-100 text-purple-800"
+                        }`}
+                      >
+                        {adresse.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.poids ? `${adresse.poids} kg` : "-"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.prix ? `${adresse.prix} XOF` : "-"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.codeTracking ? `${adresse.codeTracking}` : "-"}
+                    </td>
+                    {filteredAdresses.some(adresse => adresse.images && adresse.images.length > 0) && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {adresse.images && adresse.images.length > 0 ? (
+                          <div className="flex -space-x-2">
+                            {adresse.images.slice(0, 3).map((image) => (
+                              <img
+                                key={image.id}
+                                src={image.url}
+                                alt=""
+                                className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                              />
+                            ))}
+                            {adresse.images.length > 3 && (
+                              <div className="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs">
+                                +{adresse.images.length - 3}
+                              </div>
+                            )}
+                          </div>
+                        ) : null}
+                      </td>
                     )}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => handleEdit(adresse)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      onClick={() => handleDelete(adresse.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                    >
-                      Supprimer
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEdit(adresse)}
+                          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                        >
+                          Modifier
+                        </button>
+                        <button
+                          onClick={() => handleDelete(adresse.id)}
+                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                        >
+                          Supprimer
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       {selectedAdresse && (

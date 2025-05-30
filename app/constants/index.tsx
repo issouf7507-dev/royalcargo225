@@ -41,7 +41,7 @@ export const serviceMali: {}[] = [
     icons: <Plane className="w-16 h-16" />,
     title: "Envoie Normal",
     desc: "Profitez de tarifs avantageux pour vos envois de colis de 2 semaines.",
-    price: "9000 FR/KG",
+    price: "9500 FR/KG",
     link: "normal",
   },
 ];

@@ -87,6 +87,9 @@ export class RequestService {
         where: {
           codeTracking,
         },
+        include: {
+          images: true,
+        },
       });
 
       return request;

@@ -242,15 +242,33 @@ export default function AdresseModal({
                       required
                     />
 
-                    <input
+                    {/* <input
                       type="tel"
                       name="tel"
-                      placeholder="Téléphone"
+                      placeholder="Téléphone (10 chiffres)"
                       value={form.tel}
                       onChange={handleFormChange}
+                      pattern="[0-9]{10}"
+                      maxLength={10}
+                      minLength={10}
+                      title="Le numéro de téléphone doit contenir exactement 10 chiffres"
                       className="p-3 rounded-lg border border-gray-700 text-white bg-gray-900 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                       required
-                    />
+                    /> */}
+
+<input
+  type="tel"
+  name="tel"
+  placeholder="Téléphone (8 à 10 chiffres)"
+  value={form.tel}
+  onChange={handleFormChange}
+  pattern="^[0-9]{8,10}$"
+  maxLength={10}
+  minLength={8}
+  title="Le numéro de téléphone doit contenir entre 8 et 10 chiffres"
+  className="p-3 rounded-lg border border-gray-700 text-white bg-gray-900 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+  required
+/>
                     <input
                       type="text"
                       name="type"

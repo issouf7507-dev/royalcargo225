@@ -1,4 +1,4 @@
-// File: /Users/issoufouattara/Documents/projets_web/royalcargo2-dev-issouf/app/(main)/layout.tsx
+// File: /var/www/nextjs/royalcargo225/app/(main)/layout.tsx
 import * as entry from '../../../../app/(main)/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

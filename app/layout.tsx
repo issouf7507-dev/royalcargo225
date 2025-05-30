@@ -69,3 +69,4 @@ export default function RootLayout({
     </html>
   );
 }
+// pm2 start npm --name "nextjs" -- start

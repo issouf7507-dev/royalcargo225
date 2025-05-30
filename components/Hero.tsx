@@ -36,14 +36,23 @@ export default function Hero() {
           pays: data.request.pays,
           service: data.request.service,
           status: data.request.status,
-          codeTracking: data.request.codeTracking, // doit être retourné par l'API
+          codeTracking: data.request.codeTracking,
           date: data.request.date,
+          images: data.request.images,
+          error: null
         });
 
         setCodeT("");
+      } else {
+        setSuccessData({
+          error: "Code de tracking introuvable"
+        });
       }
     } catch (error) {
       console.log(error);
+      setSuccessData({
+        error: "Une erreur est survenue lors de la recherche"
+      });
     }
   };
 
