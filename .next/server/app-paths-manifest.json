@@ -1,5 +1,11 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/login/page": "app/login/page.js",
   "/adresses/page": "app/adresses/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/adresses/route": "app/api/adresses/route.js"
+  "/api/adresses/route": "app/api/adresses/route.js",
+  "/api/adresses/[id]/route": "app/api/adresses/[id]/route.js",
+  "/api/images/[id]/route": "app/api/images/[id]/route.js",
+  "/(main)/page": "app/(main)/page.js",
+  "/(main)/(roots)/terms/page": "app/(main)/(roots)/terms/page.js"
 }
