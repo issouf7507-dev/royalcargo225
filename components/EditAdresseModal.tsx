@@ -7,16 +7,32 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import ImageUpload from "./ImageUpload";
+import axios from "axios";
 
 interface EditAdresseModalProps {
   open: boolean;
   onClose: () => void;
   adresse: {
     id: string;
+    nom: string;
+    tel: string;
+    email: string | null;
+    pays: string;
+    type: string;
     status: string;
+    date: string | null;
+    description: string;
+    service: string;
     poids: number | null;
     prix: number | null;
-    images?: { url: string; id: string }[];
+    images: { id: string; url: string }[];
+    codeTracking: string;
+    etat: string;
+
+
+
+
+
   };
   onSave: (data: {
     status: string;
@@ -24,6 +40,7 @@ interface EditAdresseModalProps {
     prix: number | null;
     images?: File[];
   }) => void;
+  // onSMS: (phoneNumber: string, message: string) => void;
   onImageDelete?: (imageId: string) => void;
 }
 
@@ -33,6 +50,7 @@ export default function EditAdresseModal({
   adresse,
   onSave,
   onImageDelete,
+  // onSMS,
 }: EditAdresseModalProps) {
   const [formData, setFormData] = useState({
     status: adresse.status,
@@ -40,6 +58,12 @@ export default function EditAdresseModal({
     prix: adresse.prix || "",
   });
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
+
+
+
+
+
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +73,12 @@ export default function EditAdresseModal({
       prix: formData.prix ? Number(formData.prix) : null,
       images: selectedImages.length > 0 ? selectedImages : undefined,
     });
+
+   
+    
+
+
+   
   };
 
   const handleImagesUploaded = (files: File[]) => {
@@ -108,14 +138,14 @@ export default function EditAdresseModal({
             />
           </div>
 
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium mb-1">Images</label>
             <ImageUpload
               onImagesUploaded={handleImagesUploaded}
               existingImages={adresse.images}
               onImageDelete={onImageDelete}
             />
-          </div>
+          </div> */}
 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={onClose}>

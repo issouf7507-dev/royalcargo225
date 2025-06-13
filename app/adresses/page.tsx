@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import EditAdresseModal from "@/components/EditAdresseModal";
 import { LogOut, Search } from "lucide-react";
+import axios from "axios";
+
 
 interface Adresse {
   id: string;
@@ -20,6 +22,7 @@ interface Adresse {
   prix: number | null;
   images: { id: string; url: string }[];
   codeTracking: string;
+  etat: string;
 }
 
 export default function AdressesPage() {
@@ -32,6 +35,11 @@ export default function AdressesPage() {
   const [filterStatus, setFilterStatus] = useState<string>("");
   const router = useRouter();
 
+
+
+
+
+
   useEffect(() => {
     fetchAdresses();
   }, []);
@@ -39,6 +47,58 @@ export default function AdressesPage() {
   useEffect(() => {
     filterAdresses();
   }, [adresses, searchTerm, filterStatus]);
+
+
+  const shortCode = "+2250713441784";
+  let accessToken: any = null;
+  let tokenExpires: any = null;
+
+  const handleClickR = async () => {
+    try {
+      const response = await fetch("/api/bulksms", {
+        method: "POST",
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(`Erreur: ${response.statusText}`);
+      }
+      accessToken = data.access_token;
+    } catch (error) {
+      console.error("Erreur lors de l'appel de l'API:", error);
+    }
+  };
+
+  const sendSMS = async (phoneNumber: string, message: string) => {
+
+    await handleClickR();
+
+
+    try {
+      await axios.post(
+        `https://api.orange.com/smsmessaging/v1/outbound/tel:+2250713441784/requests`,
+        {
+          outboundSMSMessageRequest: {
+            address: `tel:+225${phoneNumber}`,
+            senderAddress: `tel:${shortCode}`,
+            outboundSMSTextMessage: {
+              message: message,
+            },
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // setStatus('SMS sent successfully');
+    } catch (error) {
+      console.error("Error sending SMS:", error);
+      // setStatus('Failed to send SMS');
+    }
+  };
 
   const filterAdresses = () => {
     let filtered = [...adresses];
@@ -124,6 +184,9 @@ export default function AdressesPage() {
         body: formData,
       });
 
+
+ const dataresponse = await response.json();
+
       if (response.ok) {
         fetchAdresses();
         setIsEditModalOpen(false);
@@ -131,6 +194,15 @@ export default function AdressesPage() {
       } else {
         setError("Erreur lors de la modification");
       }
+
+
+      if(dataresponse){
+        sendSMS(
+          dataresponse?.tel,
+          `ROYAL CARGO \nBONJOUR CHER CLIENT (${dataresponse.nom}). NOUS SOMMES RAVIS DE VOUS ANNONCER QUE LE STATUT DE VOTRE COLIS À CHANGER, IL EST MAINTENANT PASSER À **${dataresponse.status.toUpperCase()}**.\nPOUR PLUS DE DÉTAILS RENDEZ-VOUS sur royalcargor225.com AVEC VOTRE NUMÉRO DE SUIVI: ${dataresponse.codeTracking}`
+        );
+      }
+
     } catch (err) {
       setError("Erreur lors de la modification");
     }
@@ -248,11 +320,11 @@ export default function AdressesPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                     Code
                   </th>
-                  {filteredAdresses.some(adresse => adresse.images && adresse.images.length > 0) && (
+                  {/* {filteredAdresses.some(adresse => adresse.images && adresse.images.length > 0) && (
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                       Images
                     </th>
-                  )}
+                  )} */}
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                     Actions
                   </th>
@@ -291,7 +363,7 @@ export default function AdressesPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {adresse.codeTracking ? `${adresse.codeTracking}` : "-"}
                     </td>
-                    {filteredAdresses.some(adresse => adresse.images && adresse.images.length > 0) && (
+                    {/* {filteredAdresses.some(adresse => adresse.images && adresse.images.length > 0) && (
                       <td className="px-6 py-4 whitespace-nowrap">
                         {adresse.images && adresse.images.length > 0 ? (
                           <div className="flex -space-x-2">
@@ -311,7 +383,7 @@ export default function AdressesPage() {
                           </div>
                         ) : null}
                       </td>
-                    )}
+                    )} */}
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex space-x-2">
                         <button
@@ -346,6 +418,7 @@ export default function AdressesPage() {
           adresse={selectedAdresse}
           onSave={handleSave}
           onImageDelete={handleImageDelete}
+          // onSMS={sendSMS}
         />
       )}
     </div>

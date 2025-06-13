@@ -20,6 +20,7 @@ import {
 import Image from "next/image";
 import AdresseModal from "@/components/AdresseModal";
 import FindRequestModal from "@/components/FindRequestModal";
+import Link from "next/link";
 
 const serviceCoteDivoire = [
   {
@@ -506,8 +507,21 @@ export default function Home() {
                   Téléphones
                 </motion.h3>
                 <ul className="space-y-1">
-                  <li>📞 +225 0564919216</li>
-                  <li>📞 +225 0708201212</li>
+                  <li>
+                    <Link href="tel:+2250564919216">
+                      📞 +225 0564919216(Côte d'Ivoire)
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="tel:+2250700009595">
+                      📞 +225 0700009595(Côte d'Ivoire)
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="tel:+22377181175">
+                      📞 +223 77181175(Mali)
+                    </Link>
+                  </li>
                   <li>🇨🇳 +86 186 2097 5453</li>
                   <li>🇨🇳 +86 188 0207 2454</li>
                 </ul>

@@ -1,19 +1,6 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/adresses/[id]/route": "app/api/adresses/[id]/route.js",
-  "/api/adresses/route": "app/api/adresses/route.js",
-  "/api/auth/login/route": "app/api/auth/login/route.js",
-  "/api/auth/logout/route": "app/api/auth/logout/route.js",
-  "/api/auth/register/route": "app/api/auth/register/route.js",
-  "/api/bulksms/route": "app/api/bulksms/route.js",
-  "/api/findrequestservices/route": "app/api/findrequestservices/route.js",
-  "/api/images/[id]/route": "app/api/images/[id]/route.js",
-  "/api/requestservice/route": "app/api/requestservice/route.js",
-  "/apropos/page": "app/apropos/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/login/page": "app/login/page.js",
-  "/register_meme/page": "app/register_meme/page.js",
   "/adresses/page": "app/adresses/page.js",
-  "/(main)/page": "app/(main)/page.js",
-  "/(main)/(roots)/terms/page": "app/(main)/(roots)/terms/page.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/(main)/page": "app/(main)/page.js"
 }
