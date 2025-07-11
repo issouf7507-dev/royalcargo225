@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import EditAdresseModal from "@/components/EditAdresseModal";
 import { LogOut, Search } from "lucide-react";
+import axios from "axios";
 
 interface Adresse {
   id: string;
@@ -39,6 +40,55 @@ export default function AdressesPage() {
   useEffect(() => {
     filterAdresses();
   }, [adresses, searchTerm, filterStatus]);
+
+  const shortCode = "+2250713441784";
+  let accessToken: any = null;
+  let tokenExpires: any = null;
+
+  const handleClickR = async () => {
+    try {
+      const response = await fetch("/api/bulksms", {
+        method: "POST",
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(`Erreur: ${response.statusText}`);
+      }
+      accessToken = data.access_token;
+    } catch (error) {
+      console.error("Erreur lors de l'appel de l'API:", error);
+    }
+  };
+
+  const sendSMS = async (phoneNumber: string, message: string) => {
+    await handleClickR();
+
+    try {
+      await axios.post(
+        `https://api.orange.com/smsmessaging/v1/outbound/tel:+2250713441784/requests`,
+        {
+          outboundSMSMessageRequest: {
+            address: `tel:+225${phoneNumber}`,
+            senderAddress: `tel:${shortCode}`,
+            outboundSMSTextMessage: {
+              message: message,
+            },
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // setStatus('SMS sent successfully');
+    } catch (error) {
+      console.error("Error sending SMS:", error);
+      // setStatus('Failed to send SMS');
+    }
+  };
 
   const filterAdresses = () => {
     let filtered = [...adresses];
@@ -124,6 +174,17 @@ export default function AdressesPage() {
         body: formData,
       });
 
+      const dataresponse = await response.json();
+
+      sendSMS(
+        dataresponse?.tel,
+        `ROYAL CARGO \nBONJOUR CHER CLIENT (${
+          dataresponse.nom
+        }). NOUS SOMMES RAVIS DE VOUS ANNONCER QUE LE STATUT DE VOTRE COLIS À CHANGER, IL EST MAINTENANT PASSER À **${dataresponse.status.toUpperCase()}**.\nPOUR PLUS DE DÉTAILS RENDEZ-VOUS sur royalcargor225.com AVEC VOTRE NUMÉRO DE SUIVI: ${
+          dataresponse.codeTracking
+        }`
+      );
+
       if (response.ok) {
         fetchAdresses();
         setIsEditModalOpen(false);
@@ -208,7 +269,9 @@ export default function AdressesPage() {
           className="px-4 py-2 border rounded-lg bg-gray-900 text-white border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Tous les statuts</option>
-          <option value="En attente de réception">En attente de réception</option>
+          <option value="En attente de réception">
+            En attente de réception
+          </option>
           <option value="Colis reçu">Colis reçu</option>
           <option value="Colis envoye">Colis envoyé</option>
           <option value="Arrive à Abidjan">Arrivé à Abidjan</option>
@@ -248,11 +311,7 @@ export default function AdressesPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                     Code
                   </th>
-                  {filteredAdresses.some(adresse => adresse.images && adresse.images.length > 0) && (
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                      Images
-                    </th>
-                  )}
+
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                     Actions
                   </th>
@@ -261,11 +320,21 @@ export default function AdressesPage() {
               <tbody className="divide-y divide-gray-700">
                 {filteredAdresses.map((adresse) => (
                   <tr key={adresse.id} className="hover:bg-gray-800">
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.nom}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.tel}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.pays}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.type}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.service}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.nom}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.tel}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.pays}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.type}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.service}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -291,27 +360,7 @@ export default function AdressesPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {adresse.codeTracking ? `${adresse.codeTracking}` : "-"}
                     </td>
-                    {filteredAdresses.some(adresse => adresse.images && adresse.images.length > 0) && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {adresse.images && adresse.images.length > 0 ? (
-                          <div className="flex -space-x-2">
-                            {adresse.images.slice(0, 3).map((image) => (
-                              <img
-                                key={image.id}
-                                src={image.url}
-                                alt=""
-                                className="w-8 h-8 rounded-full border-2 border-white object-cover"
-                              />
-                            ))}
-                            {adresse.images.length > 3 && (
-                              <div className="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs">
-                                +{adresse.images.length - 3}
-                              </div>
-                            )}
-                          </div>
-                        ) : null}
-                      </td>
-                    )}
+
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex space-x-2">
                         <button

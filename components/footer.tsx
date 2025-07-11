@@ -65,8 +65,8 @@ const Footer = () => {
           <h3 className="text-white font-semibold mb-3">Contact</h3>
           <ul className="space-y-2 text-sm">
             <li>📞 +225 0564919216(Côte d'Ivoire)</li>
-            <li>📞 +225 0585327910(Côte d'Ivoire)</li>
-            <li>📞 +225 0708201212(Mali)</li>
+            <li>📞 +225 0700009595(Côte d'Ivoire)</li>
+            <li>📞 +223 77181175(Mali)</li>
             <li>📧 royalcargo225@gmail.com</li>
             <li>
               💬{" "}
