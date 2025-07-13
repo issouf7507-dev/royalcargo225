@@ -2,7 +2,7 @@ name: Deploy to VPS
 
 on:
   push:
-    branches: [main]
+    branches: [dev-feature]
   workflow_dispatch:
 
 jobs:
