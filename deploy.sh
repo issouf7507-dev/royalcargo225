@@ -66,5 +66,5 @@ ls -t backup-* | tail -n +6 | xargs -r rm -rf
 # Nettoyer le répertoire temporaire
 rm -rf $TEMP_DIR/*
 
-echo "✅ Déploiement terminé avec succès!"
+echo "✅ Déploiement terminé avec succès!c est bon"
 echo "🌐 Votre site est maintenant à jour!" 
