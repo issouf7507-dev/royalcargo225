@@ -8,12 +8,13 @@ import { existsSync, mkdirSync } from "fs";
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await params;
   try {
     // Use Next.js cookies() function for better cookie parsing
     const { cookies } = await import("next/headers");
-    const token = cookies().get("token")?.value;
+    const token = (await cookies()).get("token")?.value;
 
     if (!token) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
@@ -32,7 +33,7 @@ export async function PATCH(
 
     // Mise à jour des informations de base
     const updatedAdresse = await prisma.adresse.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         status,
         poids,
@@ -70,7 +71,7 @@ export async function PATCH(
           return prisma.image.create({
             data: {
               url: `/uploads/${filename}`,
-              adresseId: params.id,
+              adresseId: id,
             },
           });
         } catch (error) {
@@ -84,7 +85,7 @@ export async function PATCH(
 
     // Récupérer l'adresse mise à jour avec les images
     const finalAdresse = await prisma.adresse.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { images: true },
     });
 
@@ -100,12 +101,13 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await params;
   try {
     // Use Next.js cookies() function for better cookie parsing
     const { cookies } = await import("next/headers");
-    const token = cookies().get("token")?.value;
+    const token = (await cookies()).get("token")?.value;
 
     if (!token) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
@@ -117,7 +119,7 @@ export async function DELETE(
     }
 
     await prisma.adresse.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ message: "Adresse supprimée avec succès" });

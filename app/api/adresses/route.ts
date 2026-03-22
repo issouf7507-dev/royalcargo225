@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   try {
     // Utiliser cookies() de Next.js pour une extraction plus robuste
     const { cookies } = await import("next/headers");
-    const token = cookies().get("token")?.value;
+    const token = (await cookies()).get("token")?.value;
 
     if (!token) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });

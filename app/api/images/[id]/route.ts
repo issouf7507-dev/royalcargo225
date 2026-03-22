@@ -4,8 +4,9 @@ import { prisma } from "@/lib/prisma";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await params;
   try {
     const token = request.headers
       .get("cookie")
@@ -22,7 +23,7 @@ export async function DELETE(
     }
 
     await prisma.image.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ message: "Image supprimée avec succès" });
