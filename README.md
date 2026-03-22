@@ -29,6 +29,52 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
+## Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```bash
+# Database
+DATABASE_URL="mysql://username:password@localhost:3306/royalcargo"
+
+# JWT Secret (change this in production!)
+JWT_SECRET="your-super-secret-jwt-key-here"
+
+# Node Environment
+NODE_ENV="development"
+```
+
+## Database Setup
+
+1. Make sure you have MySQL installed and running
+2. Create a database named `royalcargo`
+3. Run the Prisma migrations:
+   ```bash
+   npx prisma migrate dev
+   ```
+4. Generate the Prisma client:
+   ```bash
+   npx prisma generate
+   ```
+
+## Authentication
+
+The application uses JWT-based authentication with HTTP-only cookies. The authentication flow includes:
+
+- User registration at `/register`
+- User login at `/login`
+- Protected routes that require authentication
+- Automatic token verification on API calls
+
+## API Routes
+
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
+- `GET /api/adresses` - Get all addresses (protected)
+- `PATCH /api/adresses/[id]` - Update address (protected)
+- `DELETE /api/adresses/[id]` - Delete address (protected)
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

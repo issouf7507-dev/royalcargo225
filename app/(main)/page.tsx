@@ -109,8 +109,7 @@ export default function Home() {
         });
 
         setCodeT("");
-      }
-      else{
+      } else {
         setSuccessData({
           error: "Code de tracking introuvable",
         });
@@ -172,21 +171,19 @@ export default function Home() {
             className="flex justify-center gap-4 mb-8"
           >
             <button
-              className={`px-4 py-2 rounded-full font-semibold ${
-                country === "civ"
+              className={`px-4 py-2 rounded-full font-semibold ${country === "civ"
                   ? "bg-primary text-white"
                   : "bg-gray-800 text-gray-300"
-              }`}
+                }`}
               onClick={() => setCountry("civ")}
             >
               Côte d'Ivoire
             </button>
             <button
-              className={`px-4 py-2 rounded-full font-semibold ${
-                country === "mali"
+              className={`px-4 py-2 rounded-full font-semibold ${country === "mali"
                   ? "bg-primary text-white"
                   : "bg-gray-800 text-gray-300"
-              }`}
+                }`}
               onClick={() => setCountry("mali")}
             >
               Mali

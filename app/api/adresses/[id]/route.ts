@@ -11,10 +11,9 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    const token = request.headers
-      .get("cookie")
-      ?.split("token=")[1]
-      ?.split(";")[0];
+    // Use Next.js cookies() function for better cookie parsing
+    const { cookies } = await import("next/headers");
+    const token = cookies().get("token")?.value;
 
     if (!token) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
@@ -104,10 +103,9 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const token = request.headers
-      .get("cookie")
-      ?.split("token=")[1]
-      ?.split(";")[0];
+    // Use Next.js cookies() function for better cookie parsing
+    const { cookies } = await import("next/headers");
+    const token = cookies().get("token")?.value;
 
     if (!token) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });

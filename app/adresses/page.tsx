@@ -6,7 +6,6 @@ import EditAdresseModal from "@/components/EditAdresseModal";
 import { LogOut, Search } from "lucide-react";
 import axios from "axios";
 
-
 interface Adresse {
   id: string;
   nom: string;
@@ -47,7 +46,6 @@ export default function AdressesPage() {
   useEffect(() => {
     filterAdresses();
   }, [adresses, searchTerm, filterStatus]);
-
 
   const shortCode = "+2250713441784";
   let accessToken: any = null;
@@ -185,7 +183,7 @@ export default function AdressesPage() {
       });
 
 
- const dataresponse = await response.json();
+      const dataresponse = await response.json();
 
       if (response.ok) {
         fetchAdresses();
@@ -196,7 +194,7 @@ export default function AdressesPage() {
       }
 
 
-      if(dataresponse){
+      if (dataresponse) {
         sendSMS(
           dataresponse?.tel,
           `ROYAL CARGO \nBONJOUR CHER CLIENT (${dataresponse.nom}). NOUS SOMMES RAVIS DE VOUS ANNONCER QUE LE STATUT DE VOTRE COLIS À CHANGER, IL EST MAINTENANT PASSER À **${dataresponse.status.toUpperCase()}**.\nPOUR PLUS DE DÉTAILS RENDEZ-VOUS sur royalcargor225.com AVEC VOTRE NUMÉRO DE SUIVI: ${dataresponse.codeTracking}`
@@ -280,7 +278,9 @@ export default function AdressesPage() {
           className="px-4 py-2 border rounded-lg bg-gray-900 text-white border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Tous les statuts</option>
-          <option value="En attente de réception">En attente de réception</option>
+          <option value="En attente de réception">
+            En attente de réception
+          </option>
           <option value="Colis reçu">Colis reçu</option>
           <option value="Colis envoye">Colis envoyé</option>
           <option value="Arrive à Abidjan">Arrivé à Abidjan</option>
@@ -333,23 +333,32 @@ export default function AdressesPage() {
               <tbody className="divide-y divide-gray-700">
                 {filteredAdresses.map((adresse) => (
                   <tr key={adresse.id} className="hover:bg-gray-800">
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.nom}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.tel}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.pays}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.type}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{adresse.service}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.nom}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.tel}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.pays}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.type}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {adresse.service}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                        ${
-                          adresse.status === "En attente de réception"
+                        ${adresse.status === "En attente de réception"
                             ? "bg-yellow-100 text-yellow-800"
                             : adresse.status === "Colis reçu"
-                            ? "bg-blue-100 text-blue-800"
-                            : adresse.status === "Colis envoye"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-purple-100 text-purple-800"
-                        }`}
+                              ? "bg-blue-100 text-blue-800"
+                              : adresse.status === "Colis envoye"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-purple-100 text-purple-800"
+                          }`}
                       >
                         {adresse.status}
                       </span>
@@ -418,7 +427,7 @@ export default function AdressesPage() {
           adresse={selectedAdresse}
           onSave={handleSave}
           onImageDelete={handleImageDelete}
-          // onSMS={sendSMS}
+        // onSMS={sendSMS}
         />
       )}
     </div>

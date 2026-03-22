@@ -27,9 +27,13 @@ export async function POST(request: Request) {
       );
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET || "votre_secret_jwt",
+      {
+        expiresIn: "1d",
+      }
+    );
 
     const response = NextResponse.json(
       { message: "Connexion réussie" },

@@ -4,10 +4,9 @@ import prisma from "@/lib/prisma";
 
 export async function GET(request: Request) {
   try {
-    const token = request.headers
-      .get("cookie")
-      ?.split("token=")[1]
-      ?.split(";")[0];
+    // Utiliser cookies() de Next.js pour une extraction plus robuste
+    const { cookies } = await import("next/headers");
+    const token = cookies().get("token")?.value;
 
     if (!token) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
@@ -25,7 +24,6 @@ export async function GET(request: Request) {
       include: {
         images: true,
       },
-
     });
 
     return NextResponse.json(adresses);
