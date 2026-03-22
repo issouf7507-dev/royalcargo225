@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const token = request.headers
@@ -29,7 +29,7 @@ export async function DELETE(
   } catch (error) {
     return NextResponse.json(
       { error: "Erreur lors de la suppression de l'image" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

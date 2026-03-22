@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     if (existingUser) {
       return NextResponse.json(
         { error: "Cet email est déjà utilisé" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -31,13 +31,13 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { message: "Compte créé avec succès" },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Erreur lors de l'inscription:", error);
     return NextResponse.json(
       { error: "Erreur lors de la création du compte" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

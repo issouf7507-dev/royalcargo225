@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.5.0",
-    "@prisma/client": "^6.8.2",
+    "@prisma/adapter-mariadb": "^7.5.0",
+    "@prisma/client": "^7.5.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -35,6 +36,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "dotenv": "^17.3.1",
     "framer-motion": "^11.2.10",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
@@ -58,13 +60,13 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.35.6",
-    "@types/node": "^20",
+    "@types/node": "^20.19.37",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
-    "prisma": "^6.8.2",
+    "prisma": "^7.5.0",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.4",
     "typescript": "^5"

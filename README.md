@@ -38,7 +38,7 @@ Create a `.env.local` file in the root directory with the following variables:
 DATABASE_URL="mysql://username:password@localhost:3306/royalcargo"
 
 # JWT Secret (change this in production!)
-JWT_SECRET="your-super-secret-jwt-key-here"
+NEXT_PUBLIC_JWT_SECRET="your-super-secret-jwt-key-here"
 
 # Node Environment
 NODE_ENV="development"

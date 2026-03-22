@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     if (!user) {
       return NextResponse.json(
         { error: "Utilisateur non trouvé" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -23,21 +23,21 @@ export async function POST(request: Request) {
     if (!validPassword) {
       return NextResponse.json(
         { error: "Mot de passe incorrect" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const token = jwt.sign(
       { userId: user.id },
-      process.env.JWT_SECRET || "votre_secret_jwt",
+      process.env.NEXT_PUBLIC_JWT_SECRET || "votre_secret_jwt",
       {
         expiresIn: "1d",
-      }
+      },
     );
 
     const response = NextResponse.json(
       { message: "Connexion réussie" },
-      { status: 200 }
+      { status: 200 },
     );
 
     response.cookies.set("token", token, {

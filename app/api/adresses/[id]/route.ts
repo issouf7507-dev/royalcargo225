@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 // import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import { existsSync, mkdirSync } from "fs";
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     // Use Next.js cookies() function for better cookie parsing
@@ -43,7 +43,7 @@ export async function PATCH(
     // Traitement des images
     if (images.length > 0) {
       const uploadDir = join(process.cwd(), "public", "uploads");
-      
+
       // Vérifier si le dossier existe, sinon le créer
       if (!existsSync(uploadDir)) {
         console.log("Création du dossier uploads:", uploadDir);
@@ -60,7 +60,7 @@ export async function PATCH(
         const path = join(uploadDir, filename);
 
         console.log("Tentative d'écriture du fichier:", path);
-        
+
         try {
           // Sauvegarder le fichier
           await writeFile(path, buffer);
@@ -93,14 +93,14 @@ export async function PATCH(
     console.error("Erreur lors de la modification:", error);
     return NextResponse.json(
       { error: "Erreur lors de la modification" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     // Use Next.js cookies() function for better cookie parsing
@@ -124,7 +124,7 @@ export async function DELETE(
   } catch (error) {
     return NextResponse.json(
       { error: "Erreur lors de la suppression" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
