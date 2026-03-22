@@ -4,7 +4,7 @@ module.exports = {
       name: "royalcargo",
       script: "node_modules/next/dist/bin/next",
       args: "start",
-      cwd: "/home/issouf/apps/royalcargo225",
+      cwd: "/home/dev-issouf/apps/royalcargo225",
       instances: 1,
       exec_mode: "fork", // ou "cluster" si besoin
       watch: false,
