@@ -102,7 +102,7 @@ export default function FindRequestModal({
   return (
     <Dialog open={openSuccess} onOpenChange={handleClose}>
       <DialogContent className="w-full bg-gray-900 text-center p-6 rounded-xl border-none h-full overflow-y-auto">
-        {data.error=="Code de tracking introuvable" ? (
+        {data.error == "Code de tracking introuvable" ? (
           <div className="p-4">
             <div className="flex justify-center items-center">
               <Image
@@ -167,8 +167,8 @@ export default function FindRequestModal({
                     <p className="text-gray-400">
                       <strong>Date :</strong> {new Date(data.date).toLocaleString()}
                     </p>
-                 
-               
+
+
                     <div className="flex items-center gap-2">
                       <strong className="text-gray-400">Code Tracking :</strong>
                       <span className="font-mono text-primary text-gray-400">
@@ -190,8 +190,8 @@ export default function FindRequestModal({
                         <strong className="text-gray-400 block mb-2">Images :</strong>
                         <div className="grid grid-cols-2 gap-4">
                           {data.images.map((image, index) => (
-                            <div 
-                              key={index} 
+                            <div
+                              key={index}
                               className="relative aspect-square cursor-pointer"
                               onClick={() => setSelectedImage(image)}
                             >
@@ -268,6 +268,17 @@ export default function FindRequestModal({
                   <p className="text-gray-400">
                     如有虚假申报，在机场进行虚假申报或扣押货物的所有相关费用均由当事人自行承担！
                   </p>
+                  <br />
+
+                  <p>《客户的运输标记必须写在包装的每一件物品上，否则，如果货物未在我们的仓库中被发现，我们将不承担任何责任，并且送货代理必须从仓库领取送货单。》 </p>
+                  <p>入仓号： TCM- RCG</p>
+                  <p>Numéro d'entrepôt : TCM-RCG</p>
+
+
+                  <p>客人埋头： 名字+国家电话</p>
+                  <p>  Informations client : ( {data.nom} {data.tel} )</p>
+
+                  <p>电话： +86 18664541357 (微信) </p>
                 </div>
                 <div className="flex gap-2">
                   <Button
