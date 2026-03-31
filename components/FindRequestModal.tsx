@@ -250,15 +250,20 @@ export default function FindRequestModal({
                     />
                   </div>
                   {data.service == "Envoie Maritime" ? (<div>
-                    <p>《客户的运输标记必须写在包装的每一件物品上，否则，如果货物未在我们的仓库中被发现，我们将不承担任何责任，并且送货代理必须从仓库领取送货单。》 </p>
-                    <p>入仓号： TCM- RCG</p>
-                    <p>Numéro d'entrepôt : TCM-RCG</p>
+                    <p className="text-gray-400">《客户的运输标记必须写在包装的每一件物品上，否则，如果货物未在我们的仓库中被发现，我们将不承担任何责任，并且送货代理必须从仓库领取送货单。》 </p>
+                    <p className="text-gray-400">入仓号： TCM- RCG</p>
+                    <p className="text-gray-400">Numéro d'entrepôt : TCM-RCG</p>
 
 
-                    <p>客人埋头： 名字+国家电话</p>
-                    <p>  Informations client : ( {data.nom} {data.tel} {data.service} )</p>
+                    <p className="text-gray-400">客人埋头： 名字+国家电话</p>
+                    <p className="text-gray-400">Informations client : ( {data.nom} {data.tel} {data.service} )</p>
 
-                    <p>电话： +86 18664541357 (微信) </p>
+                    <p className="text-gray-400">地址: 广东省佛山市南海区里水镇河塱沙路D2仓。</p>
+                    <p className="text-gray-400">Adresse: 广东省佛山市南海区里水镇河塱沙路D2仓。</p>
+
+                    <p className="text-gray-400">电话： +86 18664541357 (微信) </p>
+
+
                   </div>) : (
                     <div>
                       <p className="text-gray-400">

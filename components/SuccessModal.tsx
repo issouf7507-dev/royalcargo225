@@ -204,6 +204,8 @@ export default function SuccessModal({
                 <p className="text-gray-400">客人埋头： 名字+国家电话</p>
                 <p className="text-gray-400">  Informations client : ( {data.nom} {data.tel} {data.service} )</p>
 
+                <p className="text-gray-400">地址: 广东省佛山市南海区里水镇河塱沙路D2仓。</p>
+                <p className="text-gray-400">Adresse: 广东省佛山市南海区里水镇河塱沙路D2仓。</p>
                 <p className="text-gray-400">电话： +86 18664541357 (微信) </p>
 
 
