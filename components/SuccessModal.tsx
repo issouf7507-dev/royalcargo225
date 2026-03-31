@@ -193,27 +193,50 @@ export default function SuccessModal({
                   alt="log"
                 />
               </div>
-              <p className="text-gray-400">
-                重要须知（埋头）: 包装上必须写明客户的姓名和国外电话号码。
-              </p>
-              <p className="text-gray-400">
-                客户姓名和编号 : ( {data.pays}, {data.nom}, {data.tel}
-                {", "}
-                {data.service})
-              </p>
-              <p className="text-gray-400">是否有内置电池。</p>
-              <p className="text-gray-400">
-                中国广州市越秀区环市中路205号恒生大厦B座903-2
-              </p>
-              <p className="text-gray-400">
-                电话 : +86 186 2097 5453 / +86 188 0207 2454
-              </p>
-              <p className="text-gray-400">注意：不接受快递费。</p>
-              <p className="text-gray-400">收货时间: 12.00 - 20.30</p>
-              <p className="text-gray-400">违禁品将被拒收。</p>
-              <p className="text-gray-400">
-                如有虚假申报，在机场进行虚假申报或扣押货物的所有相关费用均由当事人自行承担！
-              </p>
+              {data.service == "Envoie Maritime" ? (<div>
+
+
+                <p className="text-gray-400">《客户的运输标记必须写在包装的每一件物品上，否则，如果货物未在我们的仓库中被发现，我们将不承担任何责任，并且送货代理必须从仓库领取送货单。》 </p>
+                <p className="text-gray-400">入仓号： TCM- RCG</p>
+                <p className="text-gray-400">Numéro d'entrepôt : TCM-RCG</p>
+
+
+                <p className="text-gray-400">客人埋头： 名字+国家电话</p>
+                <p className="text-gray-400">  Informations client : ( {data.nom} {data.tel} {data.service} )</p>
+
+                <p className="text-gray-400">电话： +86 18664541357 (微信) </p>
+
+
+
+              </div>) : (
+                <div>
+                  <p className="text-gray-400">
+                    重要须知（埋头）: 包装上必须写明客户的姓名和国外电话号码。
+                  </p>
+                  <p className="text-gray-400">
+                    客户姓名和编号 : ( {data.pays}, {data.nom}, {data.tel}
+                    {", "}
+                    {data.service})
+                  </p>
+                  <p className="text-gray-400">是否有内置电池。</p>
+                  <p className="text-gray-400">
+                    中国广州市越秀区环市中路205号恒生大厦B座903-2
+                  </p>
+                  <p className="text-gray-400">
+                    电话 : +86 186 2097 5453 / +86 188 0207 2454
+                  </p>
+                  <p className="text-gray-400">注意：不接受快递费。</p>
+                  <p className="text-gray-400">收货时间: 12.00 - 20.30</p>
+                  <p className="text-gray-400">违禁品将被拒收。</p>
+                  <p className="text-gray-400">
+                    如有虚假申报，在机场进行虚假申报或扣押货物的所有相关费用均由当事人自行承担！
+                  </p>
+
+                </div>
+              )
+
+              }
+
             </div>
             <div className="flex gap-2">
               <Button
