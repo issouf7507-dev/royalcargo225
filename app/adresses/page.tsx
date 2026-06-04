@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import EditAdresseModal from "@/components/EditAdresseModal";
 import { LogOut, Search } from "lucide-react";
-import axios from "axios";
 
 interface Adresse {
   id: string;
@@ -47,54 +46,19 @@ export default function AdressesPage() {
     filterAdresses();
   }, [adresses, searchTerm, filterStatus]);
 
-  const shortCode = "+2250713441784";
-  let accessToken: any = null;
-  let tokenExpires: any = null;
-
-  const handleClickR = async () => {
+  const sendSMS = async (phoneNumber: string, message: string) => {
     try {
       const response = await fetch("/api/bulksms", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: `+225${phoneNumber}`, message }),
       });
-      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(`Erreur: ${response.statusText}`);
+        throw new Error(`Erreur envoi SMS: ${response.statusText}`);
       }
-      accessToken = data.access_token;
-    } catch (error) {
-      console.error("Erreur lors de l'appel de l'API:", error);
-    }
-  };
-
-  const sendSMS = async (phoneNumber: string, message: string) => {
-
-    await handleClickR();
-
-
-    try {
-      await axios.post(
-        `https://api.orange.com/smsmessaging/v1/outbound/tel:+2250713441784/requests`,
-        {
-          outboundSMSMessageRequest: {
-            address: `tel:+225${phoneNumber}`,
-            senderAddress: `tel:${shortCode}`,
-            outboundSMSTextMessage: {
-              message: message,
-            },
-          },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      // setStatus('SMS sent successfully');
     } catch (error) {
       console.error("Error sending SMS:", error);
-      // setStatus('Failed to send SMS');
     }
   };
 
