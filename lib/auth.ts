@@ -4,7 +4,7 @@ export async function verifyToken(token: string) {
   try {
     const decoded = jwt.verify(
       token,
-      process.env.NEXT_PUBLIC_JWT_SECRET || "votre_secret_jwt",
+      process.env.JWT_SECRET!,
     );
     return decoded;
   } catch (error) {

@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { customAlphabet } from "nanoid";
 
-const nanoid = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 10); // Ex: AB12CD34EF
+const nanoid = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 10);
 
 export interface Image {
   id: string;
@@ -17,7 +17,7 @@ interface RequestInterface {
   nom: string;
   tel: string;
   email?: string;
-  pays: "COTE_D_IVOIRE" | "MALI"; // Correspond à l'enum `Pays`
+  pays: "COTE_D_IVOIRE" | "MALI";
   type: string;
   poids?: number;
   volume?: number;
@@ -25,7 +25,7 @@ interface RequestInterface {
   status: "EN_ATTENTE" | "COLIS_RECU" | "COLIS_EN_TRANSIT" | "COLIS_ARRIVE";
   date: Date;
   description: string;
-  images: Image[]; // À définir séparément
+  images: Image[];
   etat: string;
   codeTracking?: string;
   service: string;
@@ -35,66 +35,48 @@ interface RequestInterface {
 
 export class RequestService {
   async generateUniqueCode(): Promise<string> {
-    let code;
+    let code: string;
     let exists = true;
 
     while (exists) {
-      code = `MT-${nanoid()}`; // Prefixe optionnel "MT-"
+      code = `MT-${nanoid()}`;
       const found = await prisma.adresse.findUnique({
         where: { codeTracking: code },
       });
       exists = !!found;
     }
 
-    return code as string;
+    return code!;
   }
 
   async createRequest(adresse: Omit<RequestInterface, "codeTracking">) {
-    try {
-      const codeTracking = await this.generateUniqueCode();
-      const request = await prisma.adresse.create({
-        data: {
-          nom: adresse.nom,
-          tel: adresse.tel,
-          type: adresse.type,
-          pays: adresse.pays,
-          service: adresse.service,
-          status: adresse.status,
-          date: new Date(),
-          description: "",
-          etat: adresse.etat,
-          codeTracking,
-          // images: {
-          //   create: {
-          //     url: "",
-          //     description: "",
-          //   },
-          // },
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      });
+    const codeTracking = await this.generateUniqueCode();
+    const request = await prisma.adresse.create({
+      data: {
+        nom: adresse.nom,
+        tel: adresse.tel,
+        type: adresse.type,
+        pays: adresse.pays,
+        service: adresse.service,
+        status: adresse.status,
+        date: new Date(),
+        description: "",
+        etat: adresse.etat,
+        codeTracking,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
 
-      return request;
-    } catch (err) {
-      console.log(err);
-    }
+    return request;
   }
 
   async getRequestByCode(codeTracking: string) {
-    try {
-      const request = await prisma.adresse.findUnique({
-        where: {
-          codeTracking,
-        },
-        include: {
-          images: true,
-        },
-      });
+    const request = await prisma.adresse.findUnique({
+      where: { codeTracking },
+      include: { images: true },
+    });
 
-      return request;
-    } catch (err) {
-      console.log(err);
-    }
+    return request;
   }
 }
