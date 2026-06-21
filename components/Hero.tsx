@@ -2,19 +2,12 @@
 import AdresseModal from "./AdresseModal";
 import FindRequestModal from "./FindRequestModal";
 import { useState } from "react";
-
-const partners = [
-  { name: "OXFAM", logo: "/logos/oxfam.svg" },
-  { name: "DT Global", logo: "/logos/dtglobal.svg" },
-  { name: "NAYBA", logo: "/logos/nayba.svg" },
-  { name: "MOVE", logo: "/logos/move.svg" },
-  { name: "Ferguson", logo: "/logos/ferguson.svg" },
-];
+import { motion } from "framer-motion";
+import { Search, Package, MapPin, Clock, Shield } from "lucide-react";
 
 export default function Hero() {
   const [codeT, setCodeT] = useState<string>("");
   const [successData, setSuccessData] = useState<any | null>(null);
-  const [open, setOpen] = useState(false);
   const [adresseOpen, setAdresseOpen] = useState(false);
 
   const handleRequest = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,12 +17,8 @@ export default function Hero() {
         method: "POST",
         body: JSON.stringify({ codeTracking: codeT }),
       });
-
       const data = await response.json();
-
       if (data.status === 200) {
-        console.log(data);
-
         setSuccessData({
           nom: data.request.nom,
           tel: data.request.tel,
@@ -39,20 +28,14 @@ export default function Hero() {
           codeTracking: data.request.codeTracking,
           date: data.request.date,
           images: data.request.images,
-          error: null
+          error: null,
         });
-
         setCodeT("");
       } else {
-        setSuccessData({
-          error: "Code de tracking introuvable"
-        });
+        setSuccessData({ error: "Code de tracking introuvable" });
       }
-    } catch (error) {
-      console.log(error);
-      setSuccessData({
-        error: "Une erreur est survenue lors de la recherche"
-      });
+    } catch {
+      setSuccessData({ error: "Une erreur est survenue lors de la recherche" });
     }
   };
 
@@ -61,96 +44,125 @@ export default function Hero() {
       {successData && (
         <FindRequestModal
           openSuccess={!!successData}
-          onCloseSuccess={() => {
-            setSuccessData(null);
-          }}
+          onCloseSuccess={() => setSuccessData(null)}
           data={successData}
         />
       )}
-
       <AdresseModal
         open={adresseOpen}
         onClose={() => setAdresseOpen(false)}
         setAdresseOpen={setAdresseOpen}
       />
-      <section className="w-full bg-gray-900 py-12 md:py-20 px-10 lg:px-0 h-screen relative overflow-hidden">
-        {/* Background illustrations */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-primary/10 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-primary/10 rounded-full animate-pulse delay-300"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full animate-pulse delay-700"></div>
+
+      <section className="relative w-full min-h-screen bg-gray-950 overflow-hidden flex flex-col">
+        {/* Ambient glow background */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute -top-60 -left-60 w-[700px] h-[700px] bg-primary/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-primary/8 rounded-full blur-3xl" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
         </div>
 
-        <div className="flex flex-col items-center justify-center h-full relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Main content */}
-            <div className="flex flex-col items-center gap-8">
-              <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight animate-fade-in-up">
-                Livrer votre cargaison <br />
-                <span className="text-primary animate-fade-in-up delay-200">
-                  Mondial
-                </span>
-              </h1>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto animate-fade-in-up delay-300">
-                Recevez vos colis de la Chine vers la Côte d'Ivoire ou Le Mali
-                en toute sécurité et garantie. Suivi, rapidité et fiabilité pour
-                tous vos besoins logistiques.
-              </p>
+        {/* Main content */}
+        <div className="relative z-10 flex flex-col items-center justify-center flex-1 px-6 pt-28 pb-8">
+          {/* Route badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-7 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-semibold"
+          >
+            🌍 Chine → Côte d'Ivoire &amp; Mali
+          </motion.div>
 
-              {/* Tracking form */}
-              <div className="w-full max-w-md mx-auto animate-fade-in-up delay-500">
-                <div className="bg-gray-800 rounded-lg shadow-lg p-6 transform hover:scale-105 transition-all duration-300 border border-gray-700 hover:border-primary">
-                  <h3 className="text-xl font-semibold text-white mb-4">
-                    Suivi de colis
-                  </h3>
-                  <form
-                    className="flex flex-col gap-4"
-                    onSubmit={handleRequest}
-                  >
-                    <div className="relative group">
-                      <input
-                        type="text"
-                        placeholder="Numéro de suivi"
-                        value={codeT}
-                        onChange={(e) => setCodeT(e.target.value)}
-                        className="w-full px-5 py-3 rounded-lg border border-gray-700 bg-gray-900 text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none shadow-sm transition-all duration-300 group-hover:border-primary"
-                      />
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <svg
-                          className="w-5 h-5 text-gray-400 animate-bounce"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-orange-600 shadow-md transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
-                    >
-                      Suivre mon colis
-                    </button>
-                  </form>
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.1 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white text-center leading-tight mb-6 max-w-4xl"
+          >
+            Livrez vos colis{" "}
+            <br className="hidden md:block" />
+            <span className="text-primary">simplement &amp; sûrement</span>
+          </motion.h1>
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.2 }}
+            className="text-lg md:text-xl text-gray-400 text-center max-w-2xl mb-10 leading-relaxed"
+          >
+            Transport de cargaison depuis la Chine vers l'Afrique de l'Ouest.
+            Suivi en temps réel, rapidité et fiabilité pour tous vos besoins logistiques.
+          </motion.p>
+
+          {/* Tracking form */}
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.3 }}
+            className="w-full max-w-xl mb-5"
+          >
+            <form onSubmit={handleRequest} className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-1 relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <input
+                  type="text"
+                  placeholder="Numéro de suivi (ex: RC-123456)"
+                  value={codeT}
+                  onChange={(e) => setCodeT(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-700 bg-gray-900 text-white placeholder-gray-500 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                />
+              </div>
+              <button
+                type="submit"
+                className="px-8 py-4 rounded-xl bg-primary text-white font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-primary/20 whitespace-nowrap"
+              >
+                Suivre
+              </button>
+            </form>
+          </motion.div>
+
+          {/* Secondary CTA */}
+          <motion.button
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.4 }}
+            onClick={() => setAdresseOpen(true)}
+            className="px-8 py-3 rounded-full border-2 border-primary/40 text-primary font-semibold hover:bg-primary hover:text-white hover:border-primary transition-all"
+          >
+            Demande d'adresse →
+          </motion.button>
+        </div>
+
+        {/* Stats bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.6 }}
+          className="relative z-10 border-t border-gray-800 bg-gray-900/60 backdrop-blur-sm"
+        >
+          <div className="max-w-4xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: <Package className="w-4 h-4 text-primary" />, value: "500+", label: "Colis traités" },
+              { icon: <MapPin className="w-4 h-4 text-primary" />, value: "2", label: "Pays desservis" },
+              { icon: <Clock className="w-4 h-4 text-primary" />, value: "5 jours", label: "Délai express" },
+              { icon: <Shield className="w-4 h-4 text-primary" />, value: "7j/7", label: "Support client" },
+            ].map((stat, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 md:border-l md:border-gray-800 md:first:border-0 md:pl-4 md:first:pl-0"
+              >
+                <div>{stat.icon}</div>
+                <div>
+                  <div className="text-white font-bold text-base">{stat.value}</div>
+                  <div className="text-gray-500 text-xs">{stat.label}</div>
                 </div>
               </div>
-
-              {/* Request address button */}
-              <button
-                className="mt-6 px-8 py-3 rounded-full bg-transparent text-primary border-2 border-primary font-semibold hover:bg-primary hover:text-white transition-all duration-300 shadow-md transform hover:scale-105 hover:shadow-lg hover:shadow-primary/20 animate-fade-in-up delay-700"
-                onClick={() => setAdresseOpen(true)}
-              >
-                Demande d'adresse
-              </button>
-            </div>
+            ))}
           </div>
-        </div>
+        </motion.div>
       </section>
     </>
   );
