@@ -158,10 +158,27 @@ export default function AdressesPage() {
       }
 
 
-      if (dataresponse) {
+      if (response.ok && dataresponse) {
+        // Poids et prix uniquement quand le colis vient d'être envoyé
+        const details =
+          dataresponse.status === "Colis envoye"
+            ? [
+                dataresponse.poids ? `POIDS: ${dataresponse.poids} KG` : null,
+                dataresponse.prix
+                  ? `PRIX: ${dataresponse.prix
+                      .toLocaleString("fr-FR")
+                      .replace(/[  ]/g, " ")} FCFA`
+                  : null,
+              ]
+                .filter(Boolean)
+                .join("\n")
+            : "";
+
         sendSMS(
           dataresponse?.tel,
-          `ROYAL CARGO \nBONJOUR CHER CLIENT (${dataresponse.nom}). NOUS SOMMES RAVIS DE VOUS ANNONCER QUE LE STATUT DE VOTRE COLIS À CHANGER, IL EST MAINTENANT PASSER À **${dataresponse.status.toUpperCase()}**.\nPOUR PLUS DE DÉTAILS RENDEZ-VOUS sur royalcargor225.com AVEC VOTRE NUMÉRO DE SUIVI: ${dataresponse.codeTracking}`
+          `ROYAL CARGO \nBONJOUR CHER CLIENT (${dataresponse.nom}). NOUS SOMMES RAVIS DE VOUS ANNONCER QUE LE STATUT DE VOTRE COLIS À CHANGER, IL EST MAINTENANT PASSER À **${dataresponse.status.toUpperCase()}**.${
+            details ? `\n${details}` : ""
+          }\nPOUR PLUS DE DÉTAILS RENDEZ-VOUS sur royalcargor225.com AVEC VOTRE NUMÉRO DE SUIVI: ${dataresponse.codeTracking}`
         );
       }
 
