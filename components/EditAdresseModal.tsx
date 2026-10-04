@@ -24,6 +24,7 @@ interface EditAdresseModalProps {
     description: string;
     service: string;
     poids: number | null;
+    volume: number | null;
     prix: number | null;
     images: { id: string; url: string }[];
     codeTracking: string;
@@ -38,6 +39,9 @@ interface EditAdresseModalProps {
     status: string;
     poids: number | null;
     prix: number | null;
+    volume: number | null;
+    nombreColis: number | null;
+    dateArrivee: string | null;
     images?: File[];
   }) => void;
   // onSMS: (phoneNumber: string, message: string) => void;
@@ -56,7 +60,12 @@ export default function EditAdresseModal({
     status: adresse.status,
     poids: adresse.poids || "",
     prix: adresse.prix || "",
+    volume: adresse.volume || "",
+    nombreColis: "",
+    dateArrivee: "",
   });
+  const isColisEnvoye = formData.status === "Colis envoye";
+  const isEnvoiMaritime = isColisEnvoye && adresse.service === "Envoie Maritime";
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
 
@@ -71,6 +80,9 @@ export default function EditAdresseModal({
       status: formData.status,
       poids: formData.poids ? Number(formData.poids) : null,
       prix: formData.prix ? Number(formData.prix) : null,
+      volume: formData.volume ? Number(formData.volume) : null,
+      nombreColis: formData.nombreColis ? Number(formData.nombreColis) : null,
+      dateArrivee: formData.dateArrivee || null,
       images: selectedImages.length > 0 ? selectedImages : undefined,
     });
 
@@ -137,6 +149,51 @@ export default function EditAdresseModal({
               className="w-full border rounded px-3 py-2"
             />
           </div>
+
+          {isEnvoiMaritime && (
+            <>
+              <div>
+                <label className="block text-sm font-medium mb-1">Nombre de colis</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={formData.nombreColis}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nombreColis: e.target.value })
+                  }
+                  className="w-full border rounded px-3 py-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">CBM (m³)</label>
+                <input
+                  type="number"
+                  step="0.001"
+                  value={formData.volume}
+                  onChange={(e) =>
+                    setFormData({ ...formData, volume: e.target.value })
+                  }
+                  className="w-full border rounded px-3 py-2"
+                />
+              </div>
+
+            </>
+          )}
+
+          {isColisEnvoye && (
+            <div>
+              <label className="block text-sm font-medium mb-1">Date d&apos;arrivée prévue</label>
+              <input
+                type="date"
+                value={formData.dateArrivee}
+                onChange={(e) =>
+                  setFormData({ ...formData, dateArrivee: e.target.value })
+                }
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+          )}
 
           {/* <div>
             <label className="block text-sm font-medium mb-1">Images</label>

@@ -29,6 +29,7 @@ export async function PATCH(
     const status = formData.get("status") as string;
     const poids = formData.get("poids") ? Number(formData.get("poids")) : null;
     const prix = formData.get("prix") ? Number(formData.get("prix")) : null;
+    const volume = formData.get("volume") ? Number(formData.get("volume")) : undefined;
     const images = formData.getAll("images") as File[];
 
     // Mise à jour des informations de base
@@ -38,6 +39,7 @@ export async function PATCH(
         status,
         poids,
         prix,
+        volume,
       },
     });
 

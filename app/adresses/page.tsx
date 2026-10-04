@@ -17,6 +17,7 @@ interface Adresse {
   description: string;
   service: string;
   poids: number | null;
+  volume: number | null;
   prix: number | null;
   images: { id: string; url: string }[];
   codeTracking: string;
@@ -126,6 +127,9 @@ export default function AdressesPage() {
     status: string;
     poids: number | null;
     prix: number | null;
+    volume: number | null;
+    nombreColis: number | null;
+    dateArrivee: string | null;
     images?: File[];
   }) => {
     if (!selectedAdresse) return;
@@ -135,6 +139,7 @@ export default function AdressesPage() {
       formData.append("status", data.status);
       if (data.poids) formData.append("poids", data.poids.toString());
       if (data.prix) formData.append("prix", data.prix.toString());
+      if (data.volume) formData.append("volume", data.volume.toString());
       if (data.images) {
         data.images.forEach((image) => {
           formData.append("images", image);
@@ -159,27 +164,87 @@ export default function AdressesPage() {
 
 
       if (response.ok && dataresponse) {
-        // Poids et prix uniquement quand le colis vient d'être envoyé
-        const details =
-          dataresponse.status === "Colis envoye"
-            ? [
-                dataresponse.poids ? `POIDS: ${dataresponse.poids} KG` : null,
-                dataresponse.prix
-                  ? `PRIX: ${dataresponse.prix
-                      .toLocaleString("fr-FR")
-                      .replace(/[  ]/g, " ")} FCFA`
-                  : null,
-              ]
-                .filter(Boolean)
-                .join("\n")
-            : "";
+        // Pas d'emoji ni de caractères hors GSM-7 : sinon le SMS passe en Unicode
+        // (70 caractères par partie) et l'opérateur rejette les messages longs.
+        const formatPrix = (prix: number) =>
+          prix.toLocaleString("fr-FR").replace(/[\u00a0\u202f]/g, " ");
 
-        sendSMS(
-          dataresponse?.tel,
-          `ROYAL CARGO \nBONJOUR CHER CLIENT (${dataresponse.nom}). NOUS SOMMES RAVIS DE VOUS ANNONCER QUE LE STATUT DE VOTRE COLIS À CHANGER, IL EST MAINTENANT PASSER À **${dataresponse.status.toUpperCase()}**.${
-            details ? `\n${details}` : ""
-          }\nPOUR PLUS DE DÉTAILS RENDEZ-VOUS sur royalcargor225.com AVEC VOTRE NUMÉRO DE SUIVI: ${dataresponse.codeTracking}`
-        );
+        const formatDate = (date: Date) => date.toLocaleDateString("fr-FR");
+        const dateArrivee = data.dateArrivee
+          ? data.dateArrivee.split("-").reverse().join("/")
+          : null;
+
+        if (
+          dataresponse.status === "Colis envoye" &&
+          dataresponse.service === "Envoie Maritime"
+        ) {
+          // Message de départ bateau
+          const lignes = [
+            data.nombreColis ? `Nombre de colis : ${data.nombreColis}` : null,
+            dataresponse.volume ? `-CBM : ${dataresponse.volume}` : null,
+            dataresponse.prix ? `-Prix : ${formatPrix(dataresponse.prix)} FCFA` : null,
+            dateArrivee ? `-Date d'arrivée prévue : ${dateArrivee}` : null,
+          ].filter(Boolean);
+
+          sendSMS(
+            dataresponse.tel,
+            `M/MME - ${dataresponse.nom}
+
+Nous sommes ravis de vous informer que vos colis ont quitté la Chine le ${formatDate(new Date())}.
+${lignes.length ? `\n${lignes.join("\n")}\n` : ""}
+Nous vous informerons par message de toute éventuelle modification ou retard concernant l'arrivée de vos colis.
+
+Pour plus d'informations, veuillez contacter :
+Bureau Chine : +86 186 2097 5453
+Bureau Abidjan : +225 07 02 67 02 02
+
+NB : A l'arrivée de vos marchandises, vous disposez de 5 jours pour les récupérer.
+Au-delà de ce délai, des frais de magasinage compris entre 5 000 FCFA et 30 000 FCFA par jour, selon le volume et la nature des marchandises, seront ajoutés à votre facture.
+
+Merci pour votre confiance.
+ROYAL CARGO`
+          );
+        } else if (dataresponse.status === "Colis envoye") {
+          // Message de départ avion
+          const lignes = [
+            dataresponse.poids ? `Poids : ${dataresponse.poids} kg` : null,
+            dataresponse.prix ? `Montant : ${formatPrix(dataresponse.prix)} FCFA` : null,
+            `Date de départ : ${formatDate(new Date())}`,
+            dateArrivee ? `Date d'arrivée prévue : ${dateArrivee}` : null,
+          ].filter(Boolean);
+
+          sendSMS(
+            dataresponse.tel,
+            `ROYAL CARGO
+
+Bonjour Cher(e) Client(e),
+
+Nous vous informons que votre colis a été expédié.
+
+Détails de l'expédition :
+${lignes.join("\n")}
+
+Pour toute information complémentaire :
+royalcargor225.com
+
+Service client :
+Chine : +86 186 2097 5453
+Abidjan : +225 07 02 67 02 02
+
+En cas de retard, une notification vous sera envoyée par SMS.
+
+Vous disposez d'un délai de 5 jours à compter de son arrivée. Au-delà, des frais de magasinage compris entre 1 000 et 10 000 FCFA pourront etre appliqués.
+
+NB: les marchandises contenant des batteries, liquides, cosmétiques, compléments alimentaires, produits médicaux ou nappes peuvent etre soumises à des frais douaniers supplémentaires.
+
+Nous vous remercions pour votre confiance et vous souhaitons une excellente réception`
+          );
+        } else {
+          sendSMS(
+            dataresponse?.tel,
+            `ROYAL CARGO \nBONJOUR CHER CLIENT (${dataresponse.nom}). NOUS SOMMES RAVIS DE VOUS ANNONCER QUE LE STATUT DE VOTRE COLIS À CHANGER, IL EST MAINTENANT PASSER À **${dataresponse.status.toUpperCase()}**.\nPOUR PLUS DE DÉTAILS RENDEZ-VOUS sur royalcargor225.com AVEC VOTRE NUMÉRO DE SUIVI: ${dataresponse.codeTracking}`
+          );
+        }
       }
 
     } catch (err) {

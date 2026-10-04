@@ -4,7 +4,9 @@ export async function POST(req: NextRequest) {
   try {
     const { to, message } = await req.json();
 
-    const response = await fetch("https://www.sayelesend.com/api/v1/sms/send", {
+    // Sans "www" : la redirection 301 de www.sayelesend.com transforme le POST en GET
+    // et fait perdre le body et l'en-tête Authorization.
+    const response = await fetch("https://sayelesend.com/api/v1/sms/send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

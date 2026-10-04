@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import Hero from "@/components/Hero";
+import Reveal from "@/components/Reveal";
 import {
   Plane,
   Ship,
@@ -26,85 +26,146 @@ import Link from "next/link";
 const serviceCoteDivoire = [
   {
     id: 1,
-    icons: <Plane className="w-9 h-9 text-primary" />,
+    icon: Plane,
     title: "Envoi Express",
     desc: "Vos colis arrivent à destination en un clin d'œil.",
     price: "12 000 FR/KG",
     delay: "5 jours",
     badge: "Le plus rapide",
-    badgeColor: "bg-orange-500",
   },
   {
     id: 2,
-    icons: <Plane className="w-9 h-9 text-primary" />,
+    icon: Plane,
     title: "Envoi Normal",
     desc: "Profitez de tarifs avantageux pour vos envois réguliers.",
     price: "9 500 FR/KG",
     delay: "2 semaines",
     badge: "Économique",
-    badgeColor: "bg-blue-500",
   },
   {
     id: 3,
-    icons: <Ship className="w-9 h-9 text-primary" />,
+    icon: Ship,
     title: "Envoi Maritime",
     desc: "Vos colis traversent les océans en toute sérénité.",
     price: "CBM (M³)",
     delay: "Sur devis",
     badge: "Grandes quantités",
-    badgeColor: "bg-green-600",
   },
 ];
 
-const serviceMali = [
-  {
-    id: 1,
-    icons: <Plane className="w-9 h-9 text-primary" />,
-    title: "Envoi Express",
-    desc: "Vos colis arrivent à destination en un clin d'œil.",
-    price: "12 000 FR/KG",
-    delay: "5 jours",
-    badge: "Le plus rapide",
-    badgeColor: "bg-orange-500",
-  },
-  {
-    id: 2,
-    icons: <Plane className="w-9 h-9 text-primary" />,
-    title: "Envoi Normal",
-    desc: "Profitez de tarifs avantageux pour vos envois réguliers.",
-    price: "9 500 FR/KG",
-    delay: "2 semaines",
-    badge: "Économique",
-    badgeColor: "bg-blue-500",
-  },
-];
+const serviceMali = serviceCoteDivoire.slice(0, 2);
 
 const steps = [
   {
-    number: "1",
+    number: "01",
     title: "Demandez votre adresse",
     desc: "Remplissez le formulaire en ligne pour obtenir votre adresse de livraison en Chine.",
-    icon: <MapPin className="w-7 h-7 text-primary" />,
+    icon: MapPin,
   },
   {
-    number: "2",
+    number: "02",
     title: "Expédiez en Chine",
     desc: "Envoyez vos achats à notre entrepôt en Chine avec votre code client.",
-    icon: <Package className="w-7 h-7 text-primary" />,
+    icon: Package,
   },
   {
-    number: "3",
+    number: "03",
     title: "Nous gérons le transport",
     desc: "Royal Cargo prend en charge le transport sécurisé jusqu'en Afrique de l'Ouest.",
-    icon: <Ship className="w-7 h-7 text-primary" />,
+    icon: Ship,
   },
   {
-    number: "4",
+    number: "04",
     title: "Récupérez votre colis",
     desc: "Votre colis arrive à Abidjan ou Bamako. Nous vous contactons pour la livraison.",
-    icon: <CheckCircle className="w-7 h-7 text-primary" />,
+    icon: CheckCircle,
   },
 ];
+
+const features = [
+  {
+    icon: Ship,
+    title: "Transport maritime sécurisé",
+    desc: "Expédition de vos colis en conteneur ou groupage, avec suivi et assurance incluse.",
+  },
+  {
+    icon: Package,
+    title: "Réception & stockage en Chine",
+    desc: "Une adresse dédiée pour centraliser vos achats, contrôler la qualité et organiser les envois.",
+  },
+  {
+    icon: MapPin,
+    title: "Suivi en temps réel",
+    desc: "Accédez à l'état de vos colis en temps réel grâce à notre plateforme en ligne sécurisée.",
+  },
+  {
+    icon: FileCheck,
+    title: "Dédouanement simplifié",
+    desc: "Nous nous chargeons des formalités douanières à Abidjan ou Bamako pour une livraison fluide.",
+  },
+  {
+    icon: Truck,
+    title: "Livraison à domicile",
+    desc: "Livraison à votre adresse en Côte d'Ivoire ou au Mali avec des partenaires de confiance.",
+  },
+  {
+    icon: HeadsetIcon,
+    title: "Support client dédié",
+    desc: "Une équipe locale disponible 7j/7 pour répondre à vos questions et vous assister.",
+  },
+];
+
+const aboutStats = [
+  { value: "500+", label: "Colis traités", icon: Package },
+  { value: "2", label: "Pays desservis", icon: MapPin },
+  { value: "7j/7", label: "Support client", icon: HeadsetIcon },
+  { value: "100%", label: "Suivi garanti", icon: Shield },
+];
+
+// --- Styles partagés ---
+const glassCard =
+  "relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl";
+const iconTile =
+  "flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20";
+const primaryBtn =
+  "group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-zinc-950 transition-all hover:scale-[1.02] hover:bg-zinc-200 active:scale-[0.98]";
+const inputClass =
+  "w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-zinc-500 outline-none transition-colors focus:border-white/30 focus:bg-white/10";
+
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+  <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-md">
+    <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-zinc-300">
+      {children}
+    </span>
+  </div>
+);
+
+const SectionHeader = ({
+  eyebrow,
+  title,
+  accent,
+  desc,
+  center = true,
+}: {
+  eyebrow: string;
+  title: string;
+  accent?: string;
+  desc?: string;
+  center?: boolean;
+}) => (
+  <Reveal className={`space-y-5 ${center ? "text-center mx-auto max-w-2xl" : ""}`}>
+    <Eyebrow>{eyebrow}</Eyebrow>
+    <h2 className="text-4xl md:text-5xl font-medium tracking-tighter leading-[1.05] text-white">
+      {title}{" "}
+      {accent && (
+        <span className="bg-gradient-to-br from-white via-white to-primary bg-clip-text text-transparent">
+          {accent}
+        </span>
+      )}
+    </h2>
+    {desc && <p className="text-lg text-zinc-400 leading-relaxed">{desc}</p>}
+  </Reveal>
+);
 
 export default function Home() {
   const [adresseOpen, setAdresseOpen] = useState(false);
@@ -144,7 +205,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="bg-zinc-950 text-white">
       {successData && (
         <FindRequestModal
           openSuccess={!!successData}
@@ -156,623 +217,349 @@ export default function Home() {
       <Hero />
 
       {/* ── Comment ça marche ── */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="w-full bg-gray-950 py-20 px-6 lg:px-0"
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-primary font-semibold text-sm uppercase tracking-widest mb-3"
-            >
-              Simple comme bonjour
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-3xl md:text-4xl font-extrabold text-white mb-4"
-            >
-              Comment ça marche ?
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="text-gray-400 max-w-xl mx-auto"
-            >
-              En 4 étapes simples, recevez vos colis de Chine en Côte d'Ivoire ou au Mali.
-            </motion.p>
-          </div>
+      <section className="relative px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeader
+            eyebrow="Simple comme bonjour"
+            title="Comment ça"
+            accent="marche ?"
+            desc="En 4 étapes simples, recevez vos colis de Chine en Côte d'Ivoire ou au Mali."
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-            {/* Connector line desktop */}
-            <div className="hidden md:block absolute top-9 left-[14%] right-[14%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-0" />
-
+          <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.15 * i }}
-                className="relative z-10 flex flex-col items-center text-center"
-              >
-                <div className="relative w-20 h-20 rounded-2xl bg-gray-800 border border-gray-700 flex items-center justify-center mb-5">
-                  <span className="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
-                    {step.number}
-                  </span>
-                  {step.icon}
+              <Reveal key={step.number} delay={0.1 * i} className={`${glassCard} p-7`}>
+                <div className="absolute top-0 right-0 -mr-12 -mt-12 h-40 w-40 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+                <div className="relative flex items-center justify-between mb-8">
+                  <div className={iconTile}>
+                    <step.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-4xl font-medium tracking-tighter text-white/15">{step.number}</span>
                 </div>
-                <h3 className="text-white font-bold text-base mb-2">{step.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{step.desc}</p>
-              </motion.div>
+                <h3 className="relative text-lg font-semibold text-white mb-2">{step.title}</h3>
+                <p className="relative text-sm text-zinc-400 leading-relaxed">{step.desc}</p>
+              </Reveal>
             ))}
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.7 }}
-            className="text-center mt-14"
-          >
-            <button
-              onClick={() => setAdresseOpen(true)}
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white rounded-full font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-primary/25"
-            >
-              Commencer maintenant <ArrowRight className="w-4 h-4" />
+          <Reveal delay={0.4} className="mt-12 text-center">
+            <button onClick={() => setAdresseOpen(true)} className={primaryBtn}>
+              Commencer maintenant
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
-          </motion.div>
+          </Reveal>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── Tarifs ── */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="w-full bg-gray-900 py-20 px-6 lg:px-0"
-        id="tarifs"
-      >
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-primary font-semibold text-sm uppercase tracking-widest mb-3"
-          >
-            Transparence totale
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-3xl md:text-4xl font-bold text-white mb-4"
-          >
-            Nos Tarifs
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-gray-400 mb-10 max-w-lg mx-auto"
-          >
-            Choisissez votre destination pour voir les tarifs disponibles.
-          </motion.p>
+      <section id="tarifs" className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8">
+        <div className="absolute left-1/2 top-1/3 -translate-x-1/2 h-[500px] w-[700px] rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="relative mx-auto max-w-7xl">
+          <SectionHeader
+            eyebrow="Transparence totale"
+            title="Nos"
+            accent="tarifs"
+            desc="Choisissez votre destination pour voir les tarifs disponibles."
+          />
 
           {/* Country toggle */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="inline-flex items-center gap-1.5 mb-10 p-1.5 bg-gray-800 rounded-full border border-gray-700"
-          >
-            <button
-              className={`px-6 py-2 rounded-full font-semibold text-sm transition-all ${
-                country === "civ"
-                  ? "bg-primary text-white shadow-lg shadow-primary/20"
-                  : "text-gray-400 hover:text-white"
-              }`}
-              onClick={() => setCountry("civ")}
-            >
-              🇨🇮 Côte d'Ivoire
-            </button>
-            <button
-              className={`px-6 py-2 rounded-full font-semibold text-sm transition-all ${
-                country === "mali"
-                  ? "bg-primary text-white shadow-lg shadow-primary/20"
-                  : "text-gray-400 hover:text-white"
-              }`}
-              onClick={() => setCountry("mali")}
-            >
-              🇲🇱 Mali
-            </button>
-          </motion.div>
+          <Reveal delay={0.1} className="mt-10 flex justify-center">
+            <div className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 p-1.5 backdrop-blur-xl">
+              {[
+                { key: "civ", label: "🇨🇮 Côte d'Ivoire" },
+                { key: "mali", label: "🇲🇱 Mali" },
+              ].map((c) => (
+                <button
+                  key={c.key}
+                  onClick={() => setCountry(c.key)}
+                  className={`rounded-full px-6 py-2 text-sm font-semibold transition-all ${
+                    country === c.key ? "bg-white text-zinc-950" : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </Reveal>
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
-          >
-            {services.map((svc, index) => (
-              <motion.div
-                key={svc.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.15 * index }}
-                className="relative group border border-gray-700 hover:border-primary/50 rounded-2xl p-6 text-left transition-all bg-gray-800 hover:shadow-xl hover:shadow-primary/5"
+          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+            {services.map((svc, i) => (
+              <Reveal
+                key={`${country}-${svc.id}`}
+                delay={0.1 * i}
+                className={`${glassCard} group flex flex-col p-8 shadow-2xl transition-colors hover:border-white/20`}
               >
-                {/* Badge */}
-                <span className={`absolute top-4 right-4 text-xs text-white px-2.5 py-1 rounded-full font-semibold ${svc.badgeColor}`}>
-                  {svc.badge}
-                </span>
-
-                {/* Icon */}
-                <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                  {svc.icons}
+                <div className="absolute top-0 right-0 -mr-16 -mt-16 h-56 w-56 rounded-full bg-white/5 blur-3xl pointer-events-none" />
+                <div className="relative flex items-start justify-between mb-8">
+                  <div className={iconTile}>
+                    <svc.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium uppercase tracking-wide text-zinc-300">
+                    {svc.badge}
+                  </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-2">{svc.title}</h3>
-                <p className="text-gray-400 text-sm mb-4">{svc.desc}</p>
+                <h3 className="relative text-xl font-semibold text-white mb-2">{svc.title}</h3>
+                <p className="relative text-sm text-zinc-400 mb-8">{svc.desc}</p>
 
-                <div className="flex items-center justify-between mb-5">
-                  <span className="text-primary font-bold text-xl">{svc.price}</span>
-                  <span className="text-xs text-gray-500 bg-gray-700 px-2.5 py-1 rounded-full">{svc.delay}</span>
+                <div className="relative h-px w-full bg-white/10 mb-6" />
+
+                <div className="relative flex items-end justify-between mb-8">
+                  <div>
+                    <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium">Tarif</div>
+                    <div className="text-2xl font-bold tracking-tight text-white">{svc.price}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium">Délai</div>
+                    <div className="text-sm font-medium text-white">{svc.delay}</div>
+                  </div>
                 </div>
 
                 <button
                   onClick={() => setAdresseOpen(true)}
-                  className="w-full py-2.5 rounded-xl border border-primary/30 text-primary text-sm font-semibold hover:bg-primary hover:text-white hover:border-primary transition-all"
+                  className="relative mt-auto w-full rounded-full border border-white/10 bg-white/5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-zinc-950"
                 >
                   Choisir ce service
                 </button>
-              </motion.div>
+              </Reveal>
             ))}
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── Services ── */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="w-full bg-gray-950 py-20 px-6 lg:px-0"
-        id="services"
-      >
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-primary font-semibold text-sm uppercase tracking-widest mb-3"
-          >
-            Ce que nous offrons
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-3xl md:text-4xl font-extrabold text-white mb-4"
-          >
-            Nos Services
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-gray-400 mb-14 max-w-2xl mx-auto"
-          >
-            Une solution logistique complète pour garantir l'acheminement sécurisé et rapide
-            de vos colis de la Chine vers l'Afrique de l'Ouest.
-          </motion.p>
+      <section id="services" className="relative px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeader
+            eyebrow="Ce que nous offrons"
+            title="Nos"
+            accent="services"
+            desc="Une solution logistique complète pour garantir l'acheminement sécurisé et rapide de vos colis de la Chine vers l'Afrique de l'Ouest."
+          />
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {[
-              {
-                icon: <Ship className="w-6 h-6 text-white" />,
-                bg: "bg-blue-600",
-                title: "Transport maritime sécurisé",
-                desc: "Expédition de vos colis en conteneur ou groupage, avec suivi et assurance incluse.",
-              },
-              {
-                icon: <Package className="w-6 h-6 text-white" />,
-                bg: "bg-orange-500",
-                title: "Réception & stockage en Chine",
-                desc: "Une adresse dédiée pour centraliser vos achats, contrôler la qualité et organiser les envois.",
-              },
-              {
-                icon: <MapPin className="w-6 h-6 text-white" />,
-                bg: "bg-green-600",
-                title: "Suivi en temps réel",
-                desc: "Accédez à l'état de vos colis en temps réel grâce à notre plateforme en ligne sécurisée.",
-              },
-              {
-                icon: <FileCheck className="w-6 h-6 text-white" />,
-                bg: "bg-purple-600",
-                title: "Dédouanement simplifié",
-                desc: "Nous nous chargeons des formalités douanières à Abidjan ou Bamako pour une livraison fluide.",
-              },
-              {
-                icon: <Truck className="w-6 h-6 text-white" />,
-                bg: "bg-red-500",
-                title: "Livraison à domicile",
-                desc: "Livraison à votre adresse en Côte d'Ivoire ou au Mali avec des partenaires de confiance.",
-              },
-              {
-                icon: <HeadsetIcon className="w-6 h-6 text-white" />,
-                bg: "bg-teal-600",
-                title: "Support client dédié",
-                desc: "Une équipe locale disponible 7j/7 pour répondre à vos questions et vous assister.",
-              },
-            ].map((svc, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
-                className="group bg-gray-900 border border-gray-800 hover:border-gray-600 p-6 rounded-2xl hover:shadow-xl transition-all text-left"
+          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {features.map((f, i) => (
+              <Reveal
+                key={f.title}
+                delay={0.08 * i}
+                className={`${glassCard} group p-7 transition-all hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]`}
               >
-                <div className={`w-12 h-12 ${svc.bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  {svc.icon}
+                <div className={`${iconTile} mb-6 transition-transform group-hover:scale-110`}>
+                  <f.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2 text-white">{svc.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{svc.desc}</p>
-              </motion.div>
+                <h3 className="text-lg font-semibold text-white mb-2">{f.title}</h3>
+                <p className="text-sm text-zinc-400 leading-relaxed">{f.desc}</p>
+              </Reveal>
             ))}
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── Suivi ── */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="w-full bg-gray-900 py-20 px-6 lg:px-0"
-        id="suivi"
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-primary font-semibold text-sm uppercase tracking-widest mb-3"
-          >
-            Où est mon colis ?
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-3xl md:text-4xl font-bold text-white mb-4"
-          >
-            Suivre ma cargaison
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-gray-400 mb-10"
-          >
-            Entrez votre numéro de suivi pour connaître l'état de votre cargaison en temps réel.
-          </motion.p>
-          <motion.form
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="w-full max-w-xl mx-auto flex flex-col sm:flex-row gap-3"
-            onSubmit={handleRequest}
-          >
-            <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-              <input
-                type="text"
-                placeholder="Numéro de suivi (ex: RC-123456)"
-                className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-700 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-white bg-gray-800 transition-all"
-                value={codeT}
-                onChange={(e) => setCodeT(e.target.value)}
-              />
-            </div>
-            <button
-              type="submit"
-              className="px-8 py-4 rounded-xl bg-primary text-white font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-primary/20 whitespace-nowrap"
+      <section id="suivi" className="relative px-4 py-24 sm:px-6 lg:px-8">
+        <Reveal className={`${glassCard} mx-auto max-w-5xl px-6 py-16 text-center shadow-2xl sm:px-12`}>
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 h-64 w-[600px] rounded-full bg-primary/20 blur-3xl pointer-events-none" />
+          <div className="relative space-y-5">
+            <Eyebrow>
+              <span className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                </span>
+                Où est mon colis ?
+              </span>
+            </Eyebrow>
+            <h2 className="text-4xl md:text-5xl font-medium tracking-tighter text-white">
+              Suivre ma{" "}
+              <span className="bg-gradient-to-br from-white via-white to-primary bg-clip-text text-transparent">
+                cargaison
+              </span>
+            </h2>
+            <p className="mx-auto max-w-xl text-lg text-zinc-400">
+              Entrez votre numéro de suivi pour connaître l&apos;état de votre cargaison en temps réel.
+            </p>
+            <form
+              onSubmit={handleRequest}
+              className="mx-auto mt-8 flex max-w-xl flex-col gap-2 rounded-3xl border border-white/10 bg-zinc-950/50 p-2 sm:flex-row sm:rounded-full"
             >
-              Suivre
-            </button>
-          </motion.form>
-        </div>
-      </motion.section>
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-500" />
+                <input
+                  type="text"
+                  placeholder="Numéro de suivi (ex: RC-123456)"
+                  value={codeT}
+                  onChange={(e) => setCodeT(e.target.value)}
+                  className="w-full rounded-full bg-transparent py-3 pl-12 pr-4 text-white placeholder-zinc-500 outline-none"
+                />
+              </div>
+              <button type="submit" className={`${primaryBtn} whitespace-nowrap`}>
+                Suivre
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </form>
+          </div>
+        </Reveal>
+      </section>
 
       {/* ── À propos ── */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="w-full bg-gray-950 py-20 px-6 lg:px-0"
-        id="about"
-      >
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-6">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-primary font-semibold text-sm uppercase tracking-widest"
-            >
-              Notre mission
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-3xl md:text-4xl font-bold text-white"
-            >
-              Relier les continents, simplifier la logistique
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-gray-400 leading-relaxed"
-            >
-              Fondée avec la volonté de rapprocher l'Afrique de ses partenaires commerciaux,
-              Royal Cargo s'engage à offrir des services de transport sûrs, rapides et accessibles.
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-gray-500 leading-relaxed"
-            >
-              Notre vision : devenir le pont incontournable entre la Chine, la Côte d'Ivoire et le Mali.
-              Logistique transparente, suivi en temps réel, tarifs clairs et accompagnement humain.
-            </motion.p>
-            <motion.ul
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="space-y-3"
-            >
+      <section id="about" className="relative px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-7 space-y-6">
+            <SectionHeader
+              center={false}
+              eyebrow="Notre mission"
+              title="Relier les continents,"
+              accent="simplifier la logistique"
+            />
+            <Reveal delay={0.1} className="max-w-xl space-y-4 text-lg leading-relaxed">
+              <p className="text-zinc-400">
+                Fondée avec la volonté de rapprocher l&apos;Afrique de ses partenaires commerciaux,
+                Royal Cargo s&apos;engage à offrir des services de transport sûrs, rapides et accessibles.
+              </p>
+              <p className="text-zinc-500 text-base">
+                Notre vision : devenir le pont incontournable entre la Chine, la Côte d&apos;Ivoire et le Mali.
+                Logistique transparente, suivi en temps réel, tarifs clairs et accompagnement humain.
+              </p>
+            </Reveal>
+            <Reveal delay={0.2} className="flex flex-wrap gap-2">
               {["Fiabilité & sécurité", "Transparence & confiance", "Engagement local & international"].map(
-                (item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-300">
-                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                (item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-zinc-300"
+                  >
+                    <CheckCircle className="h-3.5 w-3.5 text-primary" />
                     {item}
-                  </li>
+                  </span>
                 )
               )}
-            </motion.ul>
+            </Reveal>
           </div>
 
-          {/* Stats grid */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-2 gap-4"
-          >
-            {[
-              { value: "500+", label: "Colis traités", icon: <Package className="w-6 h-6 text-primary" /> },
-              { value: "2", label: "Pays desservis", icon: <MapPin className="w-6 h-6 text-primary" /> },
-              { value: "7j/7", label: "Support client", icon: <HeadsetIcon className="w-6 h-6 text-primary" /> },
-              { value: "100%", label: "Suivi garanti", icon: <Shield className="w-6 h-6 text-primary" /> },
-            ].map((stat, i) => (
-              <div
-                key={i}
-                className="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex flex-col gap-3"
-              >
-                <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                  {stat.icon}
+          <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+            {aboutStats.map((stat, i) => (
+              <Reveal key={stat.label} delay={0.1 * i} className={`${glassCard} p-6`}>
+                <div className={`${iconTile} mb-6`}>
+                  <stat.icon className="h-5 w-5 text-white" />
                 </div>
-                <div>
-                  <div className="text-3xl font-extrabold text-white">{stat.value}</div>
-                  <div className="text-gray-500 text-sm">{stat.label}</div>
+                <div className="text-3xl font-bold tracking-tight text-white">{stat.value}</div>
+                <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium sm:text-xs">
+                  {stat.label}
                 </div>
-              </div>
+              </Reveal>
             ))}
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── Contact ── */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="w-full bg-gray-900 py-20 px-6 lg:px-0"
-        id="contact"
-      >
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
-          {/* Contact info */}
-          <div className="space-y-6">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-primary font-semibold text-sm uppercase tracking-widest"
-            >
-              Nous joindre
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-3xl md:text-4xl font-bold text-white"
-            >
-              Contactez-nous
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-gray-400"
-            >
-              Vous avez une question ? Besoin d'un devis ou d'un accompagnement ?
-              Notre équipe est disponible pour vous répondre rapidement.
-            </motion.p>
+      <section id="contact" className="relative px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-6 space-y-8">
+            <SectionHeader
+              center={false}
+              eyebrow="Nous joindre"
+              title="Contactez-nous"
+              desc="Vous avez une question ? Besoin d'un devis ou d'un accompagnement ? Notre équipe est disponible pour vous répondre rapidement."
+            />
 
             {/* WhatsApp CTA */}
-            <motion.a
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              href="https://wa.me/2250564919216"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-4 p-4 bg-green-600/10 border border-green-600/30 rounded-2xl hover:bg-green-600/20 transition-all group"
-            >
-              <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                <MessageCircle className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <div className="text-white font-semibold">Discutez sur WhatsApp</div>
-                <div className="text-green-400 text-sm group-hover:underline">+225 05 64 91 92 16</div>
-              </div>
-              <ArrowRight className="w-5 h-5 text-green-500 ml-auto" />
-            </motion.a>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="space-y-5 text-sm text-gray-400"
-            >
-              <div className="flex items-start gap-3">
-                <Building2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+            <Reveal delay={0.1}>
+              <a
+                href="https://wa.me/2250564919216"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${glassCard} group flex items-center gap-4 p-4 transition-colors hover:border-green-500/40 hover:bg-green-500/10`}
+              >
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-green-600">
+                  <MessageCircle className="h-6 w-6 text-white" />
+                </div>
                 <div>
-                  <div className="text-white font-semibold mb-1">Adresse</div>
+                  <div className="font-semibold text-white">Discutez sur WhatsApp</div>
+                  <div className="text-sm text-green-400">+225 05 64 91 92 16</div>
+                </div>
+                <ArrowRight className="ml-auto h-5 w-5 text-green-500 transition-transform group-hover:translate-x-1" />
+              </a>
+            </Reveal>
+
+            <Reveal delay={0.2} className="space-y-6 text-sm text-zinc-400">
+              <div className="flex items-start gap-4">
+                <div className={`${iconTile} h-10 w-10 flex-shrink-0`}>
+                  <Building2 className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <div className="mb-1 font-semibold text-white">Adresse</div>
                   Boulevard du Cameroun, Ligne 11
                   <br />
-                  Grand marché de Marcory, Abidjan, Côte d'Ivoire
+                  Grand marché de Marcory, Abidjan, Côte d&apos;Ivoire
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+              <div className="flex items-start gap-4">
+                <div className={`${iconTile} h-10 w-10 flex-shrink-0`}>
+                  <Phone className="h-5 w-5 text-white" />
+                </div>
                 <div>
-                  <div className="text-white font-semibold mb-1">Téléphones</div>
+                  <div className="mb-1 font-semibold text-white">Téléphones</div>
                   <ul className="space-y-1">
                     <li>
-                      <Link href="tel:+2250564919216" className="hover:text-primary transition-colors">
-                        +225 05 64 91 92 16 (Côte d'Ivoire)
+                      <Link href="tel:+2250564919216" className="transition-colors hover:text-white">
+                        +225 05 64 91 92 16 (Côte d&apos;Ivoire)
                       </Link>
                     </li>
                     <li>
-                      <Link href="tel:+2250700009595" className="hover:text-primary transition-colors">
-                        +225 07 00 00 95 95 (Côte d'Ivoire)
+                      <Link href="tel:+2250700009595" className="transition-colors hover:text-white">
+                        +225 07 00 00 95 95 (Côte d&apos;Ivoire)
                       </Link>
                     </li>
                     <li>
-                      <Link href="tel:+22377181175" className="hover:text-primary transition-colors">
+                      <Link href="tel:+22377181175" className="transition-colors hover:text-white">
                         +223 77 18 11 75 (Mali)
                       </Link>
                     </li>
-                    <li className="text-gray-500">+86 186 2097 5453 (Chine)</li>
-                    <li className="text-gray-500">+86 188 0207 2454 (Chine)</li>
+                    <li className="text-zinc-500">+86 186 2097 5453 (Chine)</li>
+                    <li className="text-zinc-500">+86 188 0207 2454 (Chine)</li>
                   </ul>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+              <div className="flex items-start gap-4">
+                <div className={`${iconTile} h-10 w-10 flex-shrink-0`}>
+                  <Mail className="h-5 w-5 text-white" />
+                </div>
                 <div>
-                  <div className="text-white font-semibold mb-1">Email</div>
+                  <div className="mb-1 font-semibold text-white">Email</div>
                   royalcargo225@gmail.com
                 </div>
               </div>
-            </motion.div>
+            </Reveal>
           </div>
 
           {/* Contact form */}
-          <motion.form
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="space-y-5 bg-gray-800 p-8 rounded-2xl border border-gray-700"
-          >
-            <h3 className="text-white font-bold text-xl mb-2">Envoyer un message</h3>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Nom complet</label>
-              <input
-                type="text"
-                className="w-full px-4 py-3 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary bg-gray-900 text-white outline-none transition-all"
-                placeholder="Votre nom"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
-              <input
-                type="email"
-                className="w-full px-4 py-3 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary bg-gray-900 text-white outline-none transition-all"
-                placeholder="Votre adresse email"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Message</label>
-              <textarea
-                rows={5}
-                className="w-full px-4 py-3 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary bg-gray-900 text-white outline-none transition-all resize-none"
-                placeholder="Votre message..."
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              className="w-full py-3.5 bg-primary text-white rounded-xl font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-primary/20"
-            >
-              Envoyer le message
-            </button>
-          </motion.form>
+          <Reveal delay={0.2} className="lg:col-span-6">
+            <form className={`${glassCard} space-y-5 p-8 shadow-2xl`}>
+              <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-white/5 blur-3xl pointer-events-none" />
+              <h3 className="relative mb-2 text-xl font-semibold text-white">Envoyer un message</h3>
+              <div className="relative">
+                <label className="mb-1.5 block text-sm font-medium text-zinc-300">Nom complet</label>
+                <input type="text" className={inputClass} placeholder="Votre nom" />
+              </div>
+              <div className="relative">
+                <label className="mb-1.5 block text-sm font-medium text-zinc-300">Email</label>
+                <input type="email" className={inputClass} placeholder="Votre adresse email" />
+              </div>
+              <div className="relative">
+                <label className="mb-1.5 block text-sm font-medium text-zinc-300">Message</label>
+                <textarea rows={5} className={`${inputClass} resize-none`} placeholder="Votre message..." />
+              </div>
+              <button type="submit" className={`${primaryBtn} relative w-full py-3.5`}>
+                Envoyer le message
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </form>
+          </Reveal>
         </div>
-      </motion.section>
+      </section>
 
       {/* ── Bouton WhatsApp flottant ── */}
       <a
@@ -780,9 +567,9 @@ export default function Home() {
         target="_blank"
         rel="noopener noreferrer"
         title="Contactez-nous sur WhatsApp"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-xl shadow-green-500/30 transition-all hover:scale-110"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 shadow-xl shadow-green-500/30 transition-all hover:scale-110 hover:bg-green-600"
       >
-        <MessageCircle className="w-7 h-7 text-white" />
+        <MessageCircle className="h-7 w-7 text-white" />
       </a>
 
       <AdresseModal
@@ -790,6 +577,6 @@ export default function Home() {
         onClose={() => setAdresseOpen(false)}
         setAdresseOpen={setAdresseOpen}
       />
-    </>
+    </div>
   );
 }
