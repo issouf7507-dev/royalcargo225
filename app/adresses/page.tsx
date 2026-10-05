@@ -228,8 +228,8 @@ Pour toute information complémentaire :
 royalcargor225.com
 
 Service client :
-Chine : +86 186 2097 5453
-Abidjan : +225 07 02 67 02 02
+Chine : +86 185 6553 7490
+Côte d'Ivoire : +225 05 85 32 79 10
 
 En cas de retard, une notification vous sera envoyée par SMS.
 
