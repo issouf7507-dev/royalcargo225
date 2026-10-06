@@ -174,70 +174,62 @@ export default function AdressesPage() {
           ? data.dateArrivee.split("-").reverse().join("/")
           : null;
 
+        const depart = formatDate(new Date());
+        const prixLigne = dataresponse.prix
+          ? `Prix : ${formatPrix(dataresponse.prix)} FCFA\n`
+          : "";
+        const arriveeLigne = dateArrivee ? `Arrivée prévue : ${dateArrivee}\n` : "";
+        const ligneDetails = (details: (string | null)[]) => {
+          const ligne = details.filter(Boolean).join(" | ");
+          return ligne ? `${ligne}\n` : "";
+        };
+
         if (
           dataresponse.status === "Colis envoye" &&
           dataresponse.service === "Envoie Maritime"
         ) {
           // Message de départ bateau
-          const lignes = [
-            data.nombreColis ? `Nombre de colis : ${data.nombreColis}` : null,
-            dataresponse.volume ? `-CBM : ${dataresponse.volume}` : null,
-            dataresponse.prix ? `-Prix : ${formatPrix(dataresponse.prix)} FCFA` : null,
-            dateArrivee ? `-Date d'arrivée prévue : ${dateArrivee}` : null,
-          ].filter(Boolean);
-
-          sendSMS(
-            dataresponse.tel,
-            `M/MME - ${dataresponse.nom}
-
-Nous sommes ravis de vous informer que vos colis ont quitté la Chine le ${formatDate(new Date())}.
-${lignes.length ? `\n${lignes.join("\n")}\n` : ""}
-Nous vous informerons par message de toute éventuelle modification ou retard concernant l'arrivée de vos colis.
-
-Pour plus d'informations, veuillez contacter :
-Bureau Chine : +86 186 2097 5453
-Bureau Abidjan : +225 07 02 67 02 02
-
-NB : A l'arrivée de vos marchandises, vous disposez de 5 jours pour les récupérer.
-Au-delà de ce délai, des frais de magasinage compris entre 5 000 FCFA et 30 000 FCFA par jour, selon le volume et la nature des marchandises, seront ajoutés à votre facture.
-
-Merci pour votre confiance.
-ROYAL CARGO`
-          );
-        } else if (dataresponse.status === "Colis envoye") {
-          // Message de départ avion
-          const lignes = [
-            dataresponse.poids ? `Poids : ${dataresponse.poids} kg` : null,
-            dataresponse.prix ? `Montant : ${formatPrix(dataresponse.prix)} FCFA` : null,
-            `Date de départ : ${formatDate(new Date())}`,
-            dateArrivee ? `Date d'arrivée prévue : ${dateArrivee}` : null,
-          ].filter(Boolean);
-
           sendSMS(
             dataresponse.tel,
             `ROYAL CARGO
 
-Bonjour Cher(e) Client(e),
+M/MME ${dataresponse.nom},
 
-Nous vous informons que votre colis a été expédié.
+Vos colis ont quitté la Chine le ${depart}.
 
-Détails de l'expédition :
-${lignes.join("\n")}
+${ligneDetails([
+  data.nombreColis ? `Colis : ${data.nombreColis}` : null,
+  dataresponse.volume ? `CBM : ${dataresponse.volume}` : null,
+])}${prixLigne}${arriveeLigne}
+Tout retard vous sera signalé par message.
 
-Pour toute information complémentaire :
+Retrait sous 5 jours après arrivée, sinon frais de magasinage de 5 000 à 30 000 FCFA par jour.
+
+Service client Abidjan : 07 02 67 02 02
 royalcargor225.com
 
-Service client :
-Chine : +86 185 6553 7490
-Côte d'Ivoire : +225 05 85 32 79 10
+Merci pour votre confiance.`
+          );
+        } else if (dataresponse.status === "Colis envoye") {
+          // Message de départ avion
+          sendSMS(
+            dataresponse.tel,
+            `M/MME ${dataresponse.nom},
 
-En cas de retard, une notification vous sera envoyée par SMS.
+Vos colis ont quitté la Chine le ${depart}.
 
-Vous disposez d'un délai de 5 jours à compter de son arrivée. Au-delà, des frais de magasinage compris entre 1 000 et 10 000 FCFA pourront etre appliqués.
+${ligneDetails([
+  data.nombreColis ? `Colis : ${data.nombreColis}` : null,
+  dataresponse.poids ? `Poids : ${dataresponse.poids} kg` : null,
+])}${prixLigne}${arriveeLigne}
+Tout retard vous sera signalé par message.
 
-NB: les marchandises contenant des batteries, liquides, cosmétiques, compléments alimentaires, produits médicaux ou nappes peuvent etre soumises à des frais douaniers supplémentaires.
+Retrait sous 5 jours après arrivée, sinon frais de magasinage de 5 000 à 30 000 FCFA par jour.
 
-Nous vous remercions pour votre confiance et vous souhaitons une excellente réception`
+Chine : +86 185 6553 7490 | Abidjan : +225 05 85 32 79 10
+
+Merci pour votre confiance.
+ROYAL CARGO`
           );
         } else {
           sendSMS(
