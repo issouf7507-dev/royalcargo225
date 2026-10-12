@@ -82,6 +82,86 @@
   }
 }
 
+/*
+ * Back office (/adresses) : palette reprise de GD Dashboard.
+ * Les gris (slate) et surfaces passent par des variables pour que le mode sombre
+ * (.bo-dark sur le conteneur du back office) les inverse sans ajouter de dark: partout.
+ * Les valeurs par défaut sont celles de Tailwind : le site public n'est pas affecté.
+ */
+:root {
+  --slate-50: 248 250 252;
+  --slate-100: 241 245 249;
+  --slate-200: 226 232 240;
+  --slate-300: 203 213 225;
+  --slate-400: 148 163 184;
+  --slate-500: 100 116 139;
+  --slate-600: 71 85 105;
+  --slate-700: 51 65 85;
+  --slate-800: 30 41 59;
+  --slate-900: 15 23 42;
+  --slate-950: 2 6 23;
+
+  --bo-canvas: 233 236 239;
+  --bo-inset: 243 244 246;
+  --bo-panel: 234 237 241;
+  --bo-surface: 248 249 250;
+  --bo-card: 255 255 255;
+  --bo-brand-50: 238 244 251;
+  --bo-accent-50: 255 244 234;
+  --bo-accent-100: 255 227 200;
+}
+
+.bo-dark {
+  color-scheme: dark;
+
+  --slate-50: 29 35 44;
+  --slate-100: 37 44 55;
+  --slate-200: 46 54 68;
+  --slate-300: 61 71 87;
+  --slate-400: 107 119 138;
+  --slate-500: 142 153 171;
+  --slate-600: 170 180 195;
+  --slate-700: 197 205 216;
+  --slate-800: 221 227 234;
+  --slate-900: 241 244 248;
+  --slate-950: 248 250 252;
+
+  --bo-canvas: 7 9 12;
+  --bo-inset: 14 17 22;
+  --bo-panel: 22 26 33;
+  --bo-surface: 27 32 41;
+  --bo-card: 34 40 52;
+  --bo-brand-50: 22 38 59;
+  --bo-accent-50: 58 36 20;
+  --bo-accent-100: 74 44 20;
+}
+
+/* Classes qu'on ne peut pas remapper par variable */
+.bo-dark .bg-white,
+.bo-dark .hover\:bg-white:hover {
+  background-color: rgb(var(--bo-card));
+}
+.bo-dark .ring-white {
+  --tw-ring-color: rgb(var(--bo-inset));
+}
+.bo-dark .bg-red-50 { background-color: #3a1a1e; }
+.bo-dark .text-red-600 { color: #f87171; }
+.bo-dark .text-red-700 { color: #fca5a5; }
+.bo-dark .bg-amber-50 { background-color: #352a12; }
+.bo-dark .text-amber-600,
+.bo-dark .text-amber-800 { color: #fcd34d; }
+.bo-dark .bg-emerald-50 { background-color: #10302a; }
+.bo-dark .text-emerald-600,
+.bo-dark .text-emerald-700 { color: #6ee7b7; }
+.bo-dark .bg-blue-50 { background-color: #172a48; }
+.bo-dark .text-blue-600,
+.bo-dark .text-blue-700 { color: #93c5fd; }
+.bo-dark .bg-violet-50 { background-color: #2a2148; }
+.bo-dark .text-violet-600,
+.bo-dark .text-violet-700 { color: #c4b5fd; }
+.bo-dark .text-brand-700,
+.bo-dark .text-brand-600 { color: #8cb8e8; }
+
 /* Styles de formulaire modernisés */
 .form__group {
   @apply relative py-4 w-full mt-2;
@@ -236,7 +316,26 @@
 }
 .reveal-visible { opacity: 1; transform: none; }
 
+/* Page de connexion du back office */
+@keyframes login-pop {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes login-drop {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes login-shine {
+  from { left: -100%; }
+  to { left: 100%; }
+}
+.login-pop { animation: login-pop 0.5s ease-out both; }
+.login-drop { animation: login-drop 0.5s ease-out both; }
+.login-shine { animation: login-shine 1s ease-in-out both; }
+
 @media (prefers-reduced-motion: reduce) {
   .hero-fade-in, .reveal { opacity: 1; transform: none; animation: none; transition: none; }
+  .login-pop, .login-drop { animation: none; }
+  .login-shine { display: none; }
   .animate-hero-marquee { animation: none; }
 }

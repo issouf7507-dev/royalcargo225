@@ -1,13 +1,6 @@
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "./ui/button";
-import ImageUpload from "./ImageUpload";
-import axios from "axios";
+import { Button, Field, Input, Modal, Select } from "@/components/admin/ui";
+import { STATUTS, statut } from "@/components/admin/status";
 
 interface EditAdresseModalProps {
   open: boolean;
@@ -97,121 +90,111 @@ export default function EditAdresseModal({
     setSelectedImages((prev) => [...prev, ...files]);
   };
 
+  const s = statut(formData.status);
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Modifier l'adresse</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Statut</label>
-            <select
-              value={formData.status}
-              onChange={(e) =>
-                setFormData({ ...formData, status: e.target.value })
-              }
-              className="w-full border rounded px-3 py-2"
-            >
-              <option value="En attente de réception">
-                En attente de réception
-              </option>
-              <option value="Colis reçu">Colis reçu</option>
-              <option value="Colis envoye">Colis envoyé</option>
-              <option value="Arrive à Abidjan">
-                Arrivé à Abidjan (Côte d'Ivoire)
-              </option>
-            </select>
-          </div>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Modifier l'adresse"
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>
+            Annuler
+          </Button>
+          <Button type="submit" form="edit-adresse">
+            Enregistrer
+          </Button>
+        </>
+      }
+    >
+      {/* Rappel du client concerné */}
+      <div className="mb-5 flex items-center justify-between gap-3 rounded-lg bg-slate-900/[0.04] px-3 py-2.5 ring-1 ring-slate-900/[0.06]">
+        <div className="min-w-0">
+          <p className="truncate font-medium text-slate-900">{adresse.nom}</p>
+          <p className="truncate text-xs text-slate-500">
+            {adresse.tel} · {adresse.service}
+          </p>
+        </div>
+        {adresse.codeTracking && (
+          <span className="shrink-0 rounded-md bg-white px-1.5 py-0.5 font-mono text-xs text-slate-700 ring-1 ring-slate-900/10">
+            {adresse.codeTracking}
+          </span>
+        )}
+      </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Poids (kg)</label>
-            <input
-              type="number"
-              step="0.01"
-              value={formData.poids}
-              onChange={(e) =>
-                setFormData({ ...formData, poids: e.target.value })
-              }
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
+      <form id="edit-adresse" onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
+        <Field label="Statut" className="sm:col-span-2">
+          <Select
+            value={formData.status}
+            onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+            options={STATUTS.map(({ value, label }) => ({
+              value,
+              label: value === "Arrive à Abidjan" ? "Arrivé à Abidjan (Côte d'Ivoire)" : label,
+            }))}
+            dot={s.dot}
+          />
+        </Field>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Prix (XOF)</label>
-            <input
-              type="number"
-              step="0.01"
-              value={formData.prix}
-              onChange={(e) =>
-                setFormData({ ...formData, prix: e.target.value })
-              }
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
+        <Field label="Poids (kg)">
+          <Input
+            type="number"
+            step="0.01"
+            value={formData.poids}
+            onChange={(e) => setFormData({ ...formData, poids: e.target.value })}
+          />
+        </Field>
 
-          {isEnvoiMaritime && (
-            <>
-              <div>
-                <label className="block text-sm font-medium mb-1">Nombre de colis</label>
-                <input
-                  type="number"
-                  min="1"
-                  value={formData.nombreColis}
-                  onChange={(e) =>
-                    setFormData({ ...formData, nombreColis: e.target.value })
-                  }
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
+        <Field label="Prix (XOF)">
+          <Input
+            type="number"
+            step="0.01"
+            value={formData.prix}
+            onChange={(e) => setFormData({ ...formData, prix: e.target.value })}
+          />
+        </Field>
 
-              <div>
-                <label className="block text-sm font-medium mb-1">CBM (m³)</label>
-                <input
-                  type="number"
-                  step="0.001"
-                  value={formData.volume}
-                  onChange={(e) =>
-                    setFormData({ ...formData, volume: e.target.value })
-                  }
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-
-            </>
-          )}
-
-          {isColisEnvoye && (
-            <div>
-              <label className="block text-sm font-medium mb-1">Date d&apos;arrivée prévue</label>
-              <input
-                type="date"
-                value={formData.dateArrivee}
-                onChange={(e) =>
-                  setFormData({ ...formData, dateArrivee: e.target.value })
-                }
-                className="w-full border rounded px-3 py-2"
+        {isEnvoiMaritime && (
+          <>
+            <Field label="Nombre de colis">
+              <Input
+                type="number"
+                min="1"
+                value={formData.nombreColis}
+                onChange={(e) => setFormData({ ...formData, nombreColis: e.target.value })}
               />
-            </div>
-          )}
+            </Field>
 
-          {/* <div>
-            <label className="block text-sm font-medium mb-1">Images</label>
-            <ImageUpload
-              onImagesUploaded={handleImagesUploaded}
-              existingImages={adresse.images}
-              onImageDelete={onImageDelete}
+            <Field label="CBM (m³)">
+              <Input
+                type="number"
+                step="0.001"
+                value={formData.volume}
+                onChange={(e) => setFormData({ ...formData, volume: e.target.value })}
+              />
+            </Field>
+          </>
+        )}
+
+        {isColisEnvoye && (
+          <Field label="Date d'arrivée prévue" className="sm:col-span-2" hint="Indiquée dans le SMS envoyé au client.">
+            <Input
+              type="date"
+              value={formData.dateArrivee}
+              onChange={(e) => setFormData({ ...formData, dateArrivee: e.target.value })}
             />
-          </div> */}
+          </Field>
+        )}
 
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Annuler
-            </Button>
-            <Button type="submit">Enregistrer</Button>
-          </div>
-        </form>
-      </DialogContent>
-    </Dialog>
+        {/* <div>
+          <label className="block text-sm font-medium mb-1">Images</label>
+          <ImageUpload
+            onImagesUploaded={handleImagesUploaded}
+            existingImages={adresse.images}
+            onImageDelete={onImageDelete}
+          />
+        </div> */}
+      </form>
+    </Modal>
   );
 }
