@@ -34,7 +34,9 @@ interface EditAdresseModalProps {
     prix: number | null;
     volume: number | null;
     nombreColis: number | null;
+    dateDepart: string | null;
     dateArrivee: string | null;
+    nbProduits: number | null;
     images?: File[];
   }) => void;
   // onSMS: (phoneNumber: string, message: string) => void;
@@ -55,10 +57,14 @@ export default function EditAdresseModal({
     prix: adresse.prix || "",
     volume: adresse.volume || "",
     nombreColis: "",
+    dateDepart: new Date().toISOString().slice(0, 10),
     dateArrivee: "",
   });
   const isColisEnvoye = formData.status === "Colis envoye";
   const isEnvoiMaritime = isColisEnvoye && adresse.service === "Envoie Maritime";
+  const isEnvoiExpress = isColisEnvoye && adresse.service === "Envoie express";
+  // Envoi express : nombre de produits (1 à 9)
+  const [nbProduits, setNbProduits] = useState(1);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
 
@@ -75,7 +81,9 @@ export default function EditAdresseModal({
       prix: formData.prix ? Number(formData.prix) : null,
       volume: formData.volume ? Number(formData.volume) : null,
       nombreColis: formData.nombreColis ? Number(formData.nombreColis) : null,
+      dateDepart: isEnvoiMaritime ? formData.dateDepart || null : null,
       dateArrivee: formData.dateArrivee || null,
+      nbProduits: isEnvoiExpress ? nbProduits : null,
       images: selectedImages.length > 0 ? selectedImages : undefined,
     });
 
@@ -176,7 +184,59 @@ export default function EditAdresseModal({
           </>
         )}
 
-        {isColisEnvoye && (
+        {isEnvoiExpress && (
+          <fieldset className="flex flex-col gap-2 sm:col-span-2">
+            <legend className="mb-2 text-[13px] font-medium leading-none text-slate-800">Nombre de produits</legend>
+            <div className="flex flex-wrap gap-1.5">
+              {Array.from({ length: 9 }, (_, i) => i + 1).map((n) => (
+                <label
+                  key={n}
+                  className={`flex size-9 cursor-pointer items-center justify-center rounded-lg text-sm font-medium ring-1 transition has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brand-500 ${
+                    nbProduits === n
+                      ? "bg-brand-700 text-white ring-brand-700"
+                      : "bg-white text-slate-700 ring-slate-300 hover:bg-slate-50"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="nbProduits"
+                    value={n}
+                    checked={nbProduits === n}
+                    onChange={() => setNbProduits(n)}
+                    className="sr-only"
+                  />
+                  {n}
+                </label>
+              ))}
+            </div>
+            <span className="text-xs text-slate-500">Indiqué dans le SMS envoyé au client.</span>
+          </fieldset>
+        )}
+
+        {isEnvoiMaritime && (
+          <>
+            <Field label="Date de départ" hint="Indiquée dans le SMS envoyé au client.">
+              <Input
+                type="date"
+                required
+                value={formData.dateDepart}
+                onChange={(e) => setFormData({ ...formData, dateDepart: e.target.value })}
+              />
+            </Field>
+
+            <Field label="Date d'arrivée estimée">
+              <Input
+                type="date"
+                required
+                min={formData.dateDepart || undefined}
+                value={formData.dateArrivee}
+                onChange={(e) => setFormData({ ...formData, dateArrivee: e.target.value })}
+              />
+            </Field>
+          </>
+        )}
+
+        {isColisEnvoye && !isEnvoiMaritime && (
           <Field label="Date d'arrivée prévue" className="sm:col-span-2" hint="Indiquée dans le SMS envoyé au client.">
             <Input
               type="date"

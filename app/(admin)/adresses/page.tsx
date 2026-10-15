@@ -225,7 +225,9 @@ export default function AdressesPage() {
     prix: number | null;
     volume: number | null;
     nombreColis: number | null;
+    dateDepart: string | null;
     dateArrivee: string | null;
+    nbProduits: number | null;
     images?: File[];
   }) => {
     if (!selectedAdresse) return;
@@ -265,12 +267,12 @@ export default function AdressesPage() {
         const formatPrix = (prix: number) =>
           prix.toLocaleString("fr-FR").replace(/[\u00a0\u202f]/g, " ");
 
-        const formatDate = (date: Date) => date.toLocaleDateString("fr-FR");
-        const dateArrivee = data.dateArrivee
-          ? data.dateArrivee.split("-").reverse().join("/")
-          : null;
+        const enFr = (iso: string) => iso.split("-").reverse().join("/");
+        const dateArrivee = data.dateArrivee ? enFr(data.dateArrivee) : null;
 
-        const depart = formatDate(new Date());
+        const depart = data.dateDepart
+          ? enFr(data.dateDepart)
+          : new Date().toLocaleDateString("fr-FR");
         const prixLigne = dataresponse.prix
           ? `Prix : ${formatPrix(dataresponse.prix)} FCFA\n`
           : "";
@@ -307,6 +309,12 @@ royalcargor225.com
 Merci pour votre confiance.`
           );
         } else if (dataresponse.status === "Colis envoye") {
+          // Nombre de produits uniquement pour l'envoi express
+          const produitsLigne =
+            dataresponse.service === "Envoie express" && data.nbProduits
+              ? `Nombre de produits : ${data.nbProduits}\n`
+              : "";
+
           // Message de départ avion
           sendSMS(
             dataresponse.tel,
@@ -314,7 +322,7 @@ Merci pour votre confiance.`
 
 Vos colis ont quitté la Chine le ${depart}.
 
-${ligneDetails([
+${produitsLigne}${ligneDetails([
   data.nombreColis ? `Colis : ${data.nombreColis}` : null,
   dataresponse.poids ? `Poids : ${dataresponse.poids} kg` : null,
 ])}${prixLigne}${arriveeLigne}

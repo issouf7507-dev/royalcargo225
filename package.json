@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed:test-users": "tsx scripts/seed-test-users.ts"
+    "seed:test-users": "tsx scripts/seed-test-users.ts",
+    "seed:test-adresses": "tsx scripts/seed-test-adresses.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.5.0",
