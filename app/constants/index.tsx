@@ -6,7 +6,7 @@ export const serviceCoteDivoire: {}[] = [
     icons: <Plane className="w-16 h-16" />,
     title: "Envoie express",
     desc: "Vos colis arrivent à destination en un clin d'oeil. (5 jours)",
-    price: "12000 FR/KG",
+    price: "14000 FR/KG",
     link: "express",
   },
   {
@@ -14,7 +14,7 @@ export const serviceCoteDivoire: {}[] = [
     icons: <Plane className="w-16 h-16" />,
     title: "Envoie Normal",
     desc: "Profitez de tarifs avantageux pour vos envois de colis de 2 semaines.",
-    price: "9500 FR/KG",
+    price: "10500 FR/KG",
     link: "normal",
   },
   {

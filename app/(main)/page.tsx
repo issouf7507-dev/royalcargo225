@@ -29,7 +29,7 @@ const serviceCoteDivoire = [
     icon: Plane,
     title: "Envoi Express",
     desc: "Vos colis arrivent à destination en un clin d'œil.",
-    price: "12 000 FR/KG",
+    price: "14 000 FR/KG",
     delay: "5 jours",
     badge: "Le plus rapide",
   },
@@ -38,7 +38,7 @@ const serviceCoteDivoire = [
     icon: Plane,
     title: "Envoi Normal",
     desc: "Profitez de tarifs avantageux pour vos envois réguliers.",
-    price: "9 500 FR/KG",
+    price: "10 500 FR/KG",
     delay: "2 semaines",
     badge: "Économique",
   },
@@ -53,7 +53,10 @@ const serviceCoteDivoire = [
   },
 ];
 
-const serviceMali = serviceCoteDivoire.slice(0, 2);
+const serviceMali = [
+  { ...serviceCoteDivoire[0], price: "12 000 FR/KG" },
+  { ...serviceCoteDivoire[1], price: "9 500 FR/KG" },
+];
 
 const steps = [
   {
